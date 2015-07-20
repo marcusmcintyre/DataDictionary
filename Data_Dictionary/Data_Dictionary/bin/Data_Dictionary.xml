@@ -1,0 +1,308 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Data_Dictionary
+</name>
+</assembly>
+<members>
+<member name="P:Data_Dictionary.My.MyWebExtension.Computer">
+	<summary>
+ Returns information about the host computer.
+ </summary>
+</member><member name="P:Data_Dictionary.My.MyWebExtension.User">
+	<summary>
+ Returns information for the current Web user.
+ </summary>
+</member><member name="P:Data_Dictionary.My.MyWebExtension.Request">
+	<summary>
+ Returns Request object.
+ </summary>
+</member><member name="P:Data_Dictionary.My.MyWebExtension.Response">
+	<summary>
+ Returns Response object.
+ </summary>
+</member><member name="P:Data_Dictionary.My.MyWebExtension.Log">
+	<summary>
+ Returns the Asp log object.
+ </summary>
+</member><member name="T:Data_Dictionary.My.MyWebExtension">
+	<summary>
+ Module used to define the properties that are available in the My Namespace for Web projects.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:Data_Dictionary._Default.form1">
+	<summary>
+form1 control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.Label0">
+	<summary>
+Label0 control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.Label16">
+	<summary>
+Label16 control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.ddlTable">
+	<summary>
+ddlTable control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.GridView1">
+	<summary>
+GridView1 control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.SqlDataSource1">
+	<summary>
+SqlDataSource1 control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.btnAdd">
+	<summary>
+btnAdd control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.lblTableName">
+	<summary>
+lblTableName control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.tbTableName">
+	<summary>
+tbTableName control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.rfvTableName">
+	<summary>
+rfvTableName control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.lblColumnName">
+	<summary>
+lblColumnName control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.tbColumnName">
+	<summary>
+tbColumnName control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.rfvColumnName">
+	<summary>
+rfvColumnName control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.lblColumnType">
+	<summary>
+lblColumnType control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.tbColumnType">
+	<summary>
+tbColumnType control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.rfvColumnType">
+	<summary>
+rfvColumnType control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.lblColumnSize">
+	<summary>
+lblColumnSize control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.tbColumnSize">
+	<summary>
+tbColumnSize control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.rfvColumnSize">
+	<summary>
+rfvColumnSize control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.lblPrecision">
+	<summary>
+lblPrecision control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.tbPrecision">
+	<summary>
+tbPrecision control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.rfvPrecision">
+	<summary>
+rfvPrecision control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.lblScale">
+	<summary>
+lblScale control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.tbScale">
+	<summary>
+tbScale control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.rfvScale">
+	<summary>
+rfvScale control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.lblNullable">
+	<summary>
+lblNullable control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.chkNullable">
+	<summary>
+chkNullable control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.lblKey">
+	<summary>
+lblKey control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.tbKey">
+	<summary>
+tbKey control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.rfvKey">
+	<summary>
+rfvKey control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.lblDescription">
+	<summary>
+lblDescription control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.tbDescription">
+	<summary>
+tbDescription control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.rfvDescription">
+	<summary>
+rfvDescription control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.btnSave">
+	<summary>
+btnSave control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+</members>
+</doc>
