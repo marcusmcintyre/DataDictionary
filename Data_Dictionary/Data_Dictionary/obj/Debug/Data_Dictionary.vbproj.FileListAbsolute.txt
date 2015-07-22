@@ -14,3 +14,11 @@ C:\Users\user\Documents\Visual Studio 2012\Projects\Data_Dictionary\Data_Diction
 C:\Users\user\Documents\Visual Studio 2012\Projects\Data_Dictionary\Data_Dictionary\obj\Debug\Data_Dictionary.dll
 C:\Users\user\Documents\Visual Studio 2012\Projects\Data_Dictionary\Data_Dictionary\obj\Debug\Data_Dictionary.xml
 C:\Users\user\Documents\Visual Studio 2012\Projects\Data_Dictionary\Data_Dictionary\obj\Debug\Data_Dictionary.pdb
+C:\Users\Marcus\Documents\Visual Studio 2012\Projects\DataDictionary\Data_Dictionary\Data_Dictionary\bin\Data_Dictionary.dll
+C:\Users\Marcus\Documents\Visual Studio 2012\Projects\DataDictionary\Data_Dictionary\Data_Dictionary\bin\Data_Dictionary.pdb
+C:\Users\Marcus\Documents\Visual Studio 2012\Projects\DataDictionary\Data_Dictionary\Data_Dictionary\bin\Data_Dictionary.xml
+C:\Users\Marcus\Documents\Visual Studio 2012\Projects\DataDictionary\Data_Dictionary\Data_Dictionary\obj\Debug\Data_Dictionary.Resources.resources
+C:\Users\Marcus\Documents\Visual Studio 2012\Projects\DataDictionary\Data_Dictionary\Data_Dictionary\obj\Debug\Data_Dictionary.vbproj.GenerateResource.Cache
+C:\Users\Marcus\Documents\Visual Studio 2012\Projects\DataDictionary\Data_Dictionary\Data_Dictionary\obj\Debug\Data_Dictionary.dll
+C:\Users\Marcus\Documents\Visual Studio 2012\Projects\DataDictionary\Data_Dictionary\Data_Dictionary\obj\Debug\Data_Dictionary.xml
+C:\Users\Marcus\Documents\Visual Studio 2012\Projects\DataDictionary\Data_Dictionary\Data_Dictionary\obj\Debug\Data_Dictionary.pdb

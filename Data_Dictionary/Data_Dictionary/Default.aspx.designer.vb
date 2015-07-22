@@ -140,13 +140,13 @@ Partial Public Class _Default
     Protected WithEvents lblColumnType As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''tbColumnType control.
+    '''ddlColumnType control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tbColumnType As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents ddlColumnType As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
     '''rfvColumnType control.
@@ -318,4 +318,13 @@ Partial Public Class _Default
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnSave As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''btnClear control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnClear As Global.System.Web.UI.WebControls.Button
 End Class

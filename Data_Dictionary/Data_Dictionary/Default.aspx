@@ -14,99 +14,23 @@
         <asp:DropDownList ID="ddlTable" runat="server" AutoPostBack="True"></asp:DropDownList><br /><br />
         <asp:GridView ID="GridView1" runat="server" AllowPaging="True" AutoGenerateColumns="False" DataKeyNames="ID" DataSourceID="SqlDataSource1" PageSize="5">
             <Columns>
-                <asp:TemplateField ShowHeader="False">
-                    <EditItemTemplate>
-                        <asp:Button ID="Button1" runat="server" CausesValidation="True" CommandName="Update" Text="Update" />
-                        &nbsp;<asp:Button ID="Button2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel" />
-                    </EditItemTemplate>
-                    <ItemTemplate>
-                        <asp:Button ID="Button1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" />
-                    </ItemTemplate>
-                    <ControlStyle Width="75px" />
-                    <ItemStyle HorizontalAlign="Center" Width="75px" />
-                </asp:TemplateField>
-                <asp:TemplateField HeaderText="TABLE_NAME" SortExpression="TABLE_NAME">
-                    <EditItemTemplate>
-                        <asp:Label ID="Label1" runat="server" Text='<%# Bind("TABLE_NAME") %>'></asp:Label>
-                    </EditItemTemplate>
-                    <ItemTemplate>
-                        <asp:Label ID="Label2" runat="server" Text='<%# Bind("TABLE_NAME") %>'></asp:Label>
-                    </ItemTemplate>
-                </asp:TemplateField>
-                <asp:TemplateField HeaderText="COLUMN_NAME" SortExpression="COLUMN_NAME">
-                    <EditItemTemplate>
-                        <asp:Label ID="Label3" runat="server" Text='<%# Bind("COLUMN_NAME") %>'></asp:Label>
-                    </EditItemTemplate>
-                    <ItemTemplate>
-                        <asp:Label ID="Label4" runat="server" Text='<%# Bind("COLUMN_NAME") %>'></asp:Label>
-                    </ItemTemplate>
-                </asp:TemplateField>
-                <asp:TemplateField HeaderText="COLUMN_TYPE" SortExpression="COLUMN_TYPE">
-                    <EditItemTemplate>
-                        <asp:Label ID="Label5" runat="server" Text='<%# Bind("COLUMN_TYPE") %>'></asp:Label>
-                    </EditItemTemplate>
-                    <ItemTemplate>
-                        <asp:Label ID="Label6" runat="server" Text='<%# Bind("COLUMN_TYPE") %>'></asp:Label>
-                    </ItemTemplate>
-                </asp:TemplateField>
-                <asp:TemplateField HeaderText="COLUMN_SIZE" SortExpression="COLUMN_SIZE" ItemStyle-HorizontalAlign="Center">
-                    <EditItemTemplate>
-                        <asp:Label ID="Label7" runat="server" Text='<%# Bind("COLUMN_SIZE") %>'></asp:Label>
-                    </EditItemTemplate>
-                    <ItemTemplate>
-                        <asp:Label ID="Label8" runat="server" Text='<%# Bind("COLUMN_SIZE") %>'></asp:Label>
-                    </ItemTemplate>
-                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                </asp:TemplateField>
-                <asp:TemplateField HeaderText="PRECISION" SortExpression="PRECISION" ItemStyle-HorizontalAlign="Center">
-                    <EditItemTemplate>
-                        <asp:Label ID="Label9" runat="server" Text='<%# Bind("PRECISION") %>'></asp:Label>
-                    </EditItemTemplate>
-                    <ItemTemplate>
-                        <asp:Label ID="Label10" runat="server" Text='<%# Bind("PRECISION") %>'></asp:Label>
-                    </ItemTemplate>
-                    <HeaderStyle HorizontalAlign="Center" />
-                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                </asp:TemplateField>
-                <asp:TemplateField HeaderText="SCALE" SortExpression="SCALE" ItemStyle-HorizontalAlign="Center">
-                    <EditItemTemplate>
-                        <asp:Label ID="Label11" runat="server" Text='<%# Bind("SCALE") %>'></asp:Label>
-                    </EditItemTemplate>
-                    <ItemTemplate>
-                        <asp:Label ID="Label12" runat="server" Text='<%# Bind("SCALE") %>'></asp:Label>
-                    </ItemTemplate>
-                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                </asp:TemplateField>
-                <asp:TemplateField HeaderText="NULLABILITY" SortExpression="NULLABILITY" ItemStyle-HorizontalAlign="Center">
-                    <EditItemTemplate>
-                        <asp:CheckBox ID="CheckBox1" runat="server" Checked='<%# Bind("NULLABILITY") %>' Enabled="false" />
-                    </EditItemTemplate>
-                    <ItemTemplate>
-                        <asp:CheckBox ID="CheckBox2" runat="server" Checked='<%# Bind("NULLABILITY") %>' Enabled="false" />
-                    </ItemTemplate>
-                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                </asp:TemplateField>
-                <asp:TemplateField HeaderText="KEY" SortExpression="KEY" ItemStyle-HorizontalAlign="Center">
-                    <EditItemTemplate>
-                        <asp:Label ID="Label13" runat="server" Text='<%# Bind("KEY") %>'></asp:Label>
-                    </EditItemTemplate>
-                    <ItemTemplate>
-                        <asp:Label ID="Label14" runat="server" Text='<%# Bind("KEY") %>'></asp:Label>
-                    </ItemTemplate>
-                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                </asp:TemplateField>
-                <asp:TemplateField HeaderText="DESCRIPTION" SortExpression="DESCRIPTION">
-                    <EditItemTemplate>
-                        <asp:TextBox ID="tbEditDescription" runat="server" Text='<%# Bind("DESCRIPTION") %>'></asp:TextBox>
-                    </EditItemTemplate>
-                    <ItemTemplate>
-                        <asp:Label ID="Label15" runat="server" Text='<%# Bind("DESCRIPTION") %>'></asp:Label>
-                    </ItemTemplate>
-                </asp:TemplateField>
+                <asp:CommandField ButtonType="Button" SelectText="    " ShowSelectButton="True" />
+                <asp:BoundField DataField="TABLE_NAME" HeaderText="Table Name" />
+                <asp:BoundField DataField="COLUMN_NAME" HeaderText="Column Name" />
+                <asp:BoundField DataField="COLUMN_TYPE" HeaderText="Column Type" />
+                <asp:BoundField DataField="COLUMN_SIZE" HeaderText="Column Size" ItemStyle-HorizontalAlign="Center" />
+                <asp:BoundField DataField="PRECISION" HeaderText="Precision" ItemStyle-HorizontalAlign="Center" />
+                <asp:BoundField DataField="SCALE" HeaderText="Scale" ItemStyle-HorizontalAlign="Center" />
+                <asp:BoundField DataField="NULLABILITY" HeaderText="Nullability" ItemStyle-HorizontalAlign="Center" />
+                <asp:BoundField DataField="KEY" HeaderText="Key" ItemStyle-HorizontalAlign="Center" />
+                <asp:BoundField DataField="DESCRIPTION" HeaderText="Description" />
             </Columns>
+
+            <RowStyle BackColor="White" />
+            <SelectedRowStyle BackColor="LightCyan" />
         </asp:GridView>
-        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\user\Documents\Database3.accdb" ProviderName="<%$ ConnectionStrings:AccessConnection.ProviderName %>" SelectCommand="SELECT * FROM [DATA_DICTIONARY] WHERE TABLE_NAME=' '"></asp:SqlDataSource><br />
-        <asp:Button ID="btnAdd" runat="server" Text="Add New Entry" /><br /><br />
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Marcus\Documents\Database3.accdb" ProviderName="<%$ ConnectionStrings:AccessConnection.ProviderName %>" SelectCommand="SELECT * FROM [DATA_DICTIONARY] WHERE TABLE_NAME=' '"></asp:SqlDataSource><br />
+        <asp:Button ID="btnAdd" runat="server" Text="Add New Entry" CausesValidation="false" /><br /><br />
 
         <table>
             <tr>
@@ -132,8 +56,8 @@
                     <asp:Label ID="lblColumnType" runat="server" Text="Column Type: "></asp:Label>
                 </td>
                 <td>
-                    <asp:TextBox ID="tbColumnType" runat="server" MaxLength="255"></asp:TextBox>
-                    <asp:RequiredFieldValidator id="rfvColumnType" runat="server" ControlToValidate="tbColumnType" ErrorMessage="You must enter a Column Type.">*</asp:RequiredFieldValidator>
+                    <asp:DropDownList ID="ddlColumnType" runat="server"></asp:DropDownList>
+                    <asp:RequiredFieldValidator ID="rfvColumnType" runat="server" ControlToValidate="ddlColumnType"></asp:RequiredFieldValidator>
                 </td>
             </tr>
             <tr>
@@ -195,6 +119,7 @@
                 </td>
                 <td>
                     <asp:Button ID="btnSave" runat="server" Text="Save" />
+                    <asp:Button ID="btnClear" runat="server" Text="Clear" CausesValidation="false"/>
                 </td>
             </tr>
         </table>

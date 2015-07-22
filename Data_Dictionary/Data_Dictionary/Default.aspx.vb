@@ -1,48 +1,101 @@
 ﻿Imports System.Data.OleDb
 Imports System.Data.Sql
 Imports System
+Imports System.Drawing.Color
 
 Public Class _Default
     Inherits System.Web.UI.Page
 
-    Const connStr = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=C:\Users\user\Documents\Database3.accdb;"
-    Const strTable = "test"
-
-    Dim arrTables As ArrayList
+    Const connStr = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=C:\Users\Marcus\Documents\Database3.accdb;"
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not (IsPostBack()) Then
-            EnableDisableAddForm("False")
+            EnableDisableForm("False")
             populateDropDown()
             filterDataDictionaryByTable()
         End If
 
     End Sub
 
-    Private Sub EnableDisableAddForm(ByVal value)
-        'Input Controls
-        tbTableName.Enabled = value
-        tbColumnName.Enabled = value
-        tbColumnType.Enabled = value
-        tbColumnSize.Enabled = value
-        tbPrecision.Enabled = value
-        tbScale.Enabled = value
-        chkNullable.Enabled = value
-        tbKey.Enabled = value
-        tbDescription.Enabled = value
+    Private Sub ddlTable_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlTable.SelectedIndexChanged
+        If (GridView1.EditIndex <> -1) Then
+            GridView1.EditIndex = -1
+        End If
+        clearForm()
+        filterDataDictionaryByTable()
+    End Sub
 
-        'Validators
-        rfvTableName.Enabled = value
-        rfvColumnName.Enabled = value
-        rfvColumnType.Enabled = value
-        rfvColumnSize.Enabled = value
-        rfvPrecision.Enabled = value
-        rfvScale.Enabled = value
-        rfvKey.Enabled = value
-        rfvDescription.Enabled = value
+#Region "GridView Events"
 
-        'Buttons
-        btnSave.Enabled = value
+    Private Sub GridView1_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles GridView1.PageIndexChanging
+        filterDataDictionaryByTable()
+    End Sub
+    Private Sub GridView1_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles GridView1.RowCommand
+
+    End Sub
+
+    Private Sub GridView1_SelectedIndexChanging(sender As Object, e As GridViewSelectEventArgs) Handles GridView1.SelectedIndexChanging
+
+    End Sub
+
+    Protected Sub GridView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles GridView1.SelectedIndexChanged
+        If (GridView1.SelectedIndex <> -1) Then
+            EnableDisableForm("True")
+            fillSelectedDetails()
+        End If
+    End Sub
+
+
+#End Region
+
+#Region "Button Events"
+    Protected Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
+        DataBind()
+    End Sub
+
+    Protected Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
+        EnableDisableForm("True")
+        tbTableName.Text = ddlTable.SelectedValue
+    End Sub
+
+    Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
+        EnableDisableForm("True")
+        clearForm()
+    End Sub
+#End Region
+
+#Region "Helper Subs/Functions"
+    Private Sub updateDescription(des As String)
+        Dim commandText = "UPDATE " & ddlTable.SelectedValue & " SET " & "='@val' WHERE ID = '@row'"
+        Dim mySqlConn As New OleDbConnection(connStr)
+        Dim sqlComm As New OleDbCommand()
+
+        mySqlConn.Open()
+        'sqlComm.Parameters.Add("@field", OleDbType.)
+        'sqlComm.CommandText = commandText
+        'sqlComm.Parameters.Add(
+        'sqlComm.Connection = mySqlConn
+        SqlDataSource1.UpdateCommand = sqlComm.CommandText
+        sqlComm.ExecuteNonQuery()
+
+        mySqlConn.Close()
+    End Sub
+
+    Private Sub fillSelectedDetails()
+        clearForm()
+
+        tbTableName.Text = GridView1.SelectedRow.Cells(1).Text
+        tbColumnName.Text = GridView1.SelectedRow.Cells(2).Text
+        ddlColumnType.SelectedValue = GridView1.SelectedRow.Cells(3).Text
+        tbColumnSize.Text = GridView1.SelectedRow.Cells(4).Text
+        tbPrecision.Text = GridView1.SelectedRow.Cells(5).Text
+        tbScale.Text = GridView1.SelectedRow.Cells(6).Text
+        chkNullable.Checked = GridView1.SelectedRow.Cells(7).Text
+        tbKey.Text = GridView1.SelectedRow.Cells(8).Text
+        If Not (GridView1.SelectedRow.Cells(9).Text.Equals("&nbsp;")) Then
+            tbDescription.Text = GridView1.SelectedRow.Cells(9).Text
+        End If
+
     End Sub
 
     Private Sub populateDropDown()
@@ -67,85 +120,50 @@ Public Class _Default
 
     Private Sub filterDataDictionaryByTable()
         If (ddlTable.SelectedIndex <> 0) Then
+            GridView1.SelectedIndex = -1
             SqlDataSource1.SelectCommand = "SELECT * FROM [DATA_DICTIONARY] WHERE TABLE_NAME='" & ddlTable.SelectedValue & "' ORDER BY COLUMN_NAME"
             GridView1.DataBind()
+            tbTableName.Text = ddlTable.SelectedValue
         End If
     End Sub
 
-    Private Sub updateDescription(des As String)
-        Dim mySqlConn As New OleDbConnection(connStr)
-        Dim sqlComm As New OleDbCommand()
-
-        mySqlConn.Open()
-        sqlComm.Parameters.Add("", OleDbType.VarChar)
-        sqlComm.CommandText = "UPDATE [DATA_DICTIONARY] SET DESCIPTION='" & des & "' WHERE TABLE_NAME = '" & ddlTable.SelectedValue & "';"
-        sqlComm.Connection = mySqlConn
-        SqlDataSource1.UpdateCommand = sqlComm.CommandText
-        sqlComm.ExecuteNonQuery()
-
-        mySqlConn.Close()
+    Private Sub clearForm()
+        tbTableName.Text = ""
+        tbColumnName.Text = ""
+        ddlColumnType.SelectedIndex = -1
+        tbColumnSize.Text = ""
+        tbPrecision.Text = ""
+        tbScale.Text = ""
+        chkNullable.Checked = False
+        tbKey.Text = ""
+        tbDescription.Text = ""
     End Sub
 
-    Private Sub ddlTable_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlTable.SelectedIndexChanged
-        If (GridView1.EditIndex <> -1) Then
-            GridView1.EditIndex = -1
-        End If
-        filterDataDictionaryByTable()
+    Private Sub EnableDisableForm(ByVal value)
+        'Input Controls
+        tbTableName.Enabled = value
+        tbColumnName.Enabled = value
+        ddlColumnType.Enabled = value
+        tbColumnSize.Enabled = value
+        tbPrecision.Enabled = value
+        tbScale.Enabled = value
+        chkNullable.Enabled = value
+        tbKey.Enabled = value
+        tbDescription.Enabled = value
+
+        'Validators
+        rfvTableName.Enabled = value
+        rfvColumnName.Enabled = value
+        rfvColumnType.Enabled = value
+        rfvColumnSize.Enabled = value
+        rfvPrecision.Enabled = value
+        rfvScale.Enabled = value
+        rfvKey.Enabled = value
+        rfvDescription.Enabled = value
+
+        'Buttons
+        btnSave.Enabled = value
+        btnClear.Enabled = value
     End Sub
-
-    Private Sub GridView1_RowCancelingEdit(sender As Object, e As GridViewCancelEditEventArgs) Handles GridView1.RowCancelingEdit
-        filterDataDictionaryByTable()
-    End Sub
-
-    Private Sub GridView1_RowEditing(sender As Object, e As GridViewEditEventArgs) Handles GridView1.RowEditing
-        filterDataDictionaryByTable()
-    End Sub
-
-    Private Sub GridView1_RowUpdating(sender As Object, e As GridViewUpdateEventArgs) Handles GridView1.RowUpdating
-        Dim mySqlConn As New OleDbConnection(connStr)
-        Dim sqlComm As New OleDbCommand()
-
-        mySqlConn.Open()
-
-        For Each entry As DictionaryEntry In e.NewValues
-            'TODO
-
-            'Parse the entries to get their Data Type and add them to the parameters
-
-            If Not entry.Value.GetType() = GetType(Boolean) Then
-
-            End If
-            Select Case entry.Value.GetType()
-                Case GetType(Boolean)
-                    If entry.Value = True Then
-                        sqlComm.Parameters.Add("True", OleDbType.Boolean)
-                    Else
-                        sqlComm.Parameters.Add("False", OleDbType.Boolean)
-                    End If
-
-                Case GetType(Long)
-                    sqlComm.Parameters.Add(entry.Value, OleDbType.Numeric)
-
-                Case GetType(String)
-                    sqlComm.Parameters.Add(entry.Value.ToString, OleDbType.VarChar)
-
-                Case Else
-            End Select
-        Next
-        DataBind()
-    End Sub
-
-    Protected Sub GridView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles GridView1.SelectedIndexChanged
-        GridView1.EditIndex = GridView1.SelectedIndex
-    End Sub
-
-    Protected Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-        
-
-        DataBind()
-    End Sub
-
-    Protected Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
-        EnableDisableAddForm("True")
-    End Sub
+#End Region
 End Class
