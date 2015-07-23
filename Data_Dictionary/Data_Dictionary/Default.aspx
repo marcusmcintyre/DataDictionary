@@ -15,6 +15,7 @@
         <asp:GridView ID="GridView1" runat="server" AllowPaging="True" AutoGenerateColumns="False" DataKeyNames="ID" DataSourceID="SqlDataSource1" PageSize="5">
             <Columns>
                 <asp:CommandField ButtonType="Button" SelectText="    " ShowSelectButton="True" />
+                <asp:BoundField DataField="ID" Visible="false" />
                 <asp:BoundField DataField="TABLE_NAME" HeaderText="Table Name" />
                 <asp:BoundField DataField="COLUMN_NAME" HeaderText="Column Name" />
                 <asp:BoundField DataField="COLUMN_TYPE" HeaderText="Column Type" />
@@ -30,7 +31,8 @@
             <SelectedRowStyle BackColor="LightCyan" />
         </asp:GridView>
         <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Marcus\Documents\Database3.accdb" ProviderName="<%$ ConnectionStrings:AccessConnection.ProviderName %>" SelectCommand="SELECT * FROM [DATA_DICTIONARY] WHERE TABLE_NAME=' '"></asp:SqlDataSource><br />
-        <asp:Button ID="btnAdd" runat="server" Text="Add New Entry" CausesValidation="false" /><br /><br />
+        <asp:Button ID="btnAdd" runat="server" Text="Add New Entry" CausesValidation="false" />
+        <asp:Label ID="lblStatus" runat="server" Text="Adding" Visible="false" /><br /><br />
 
         <table>
             <tr>
@@ -119,7 +121,7 @@
                 </td>
                 <td>
                     <asp:Button ID="btnSave" runat="server" Text="Save" />
-                    <asp:Button ID="btnClear" runat="server" Text="Clear" CausesValidation="false"/>
+                    <asp:Button ID="btnCancel" runat="server" Text="Cancel" CausesValidation="false"/>
                 </td>
             </tr>
         </table>

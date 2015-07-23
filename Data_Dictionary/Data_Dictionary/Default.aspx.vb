@@ -11,8 +11,9 @@ Public Class _Default
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not (IsPostBack()) Then
             EnableDisableForm("False")
-            populateDropDown()
+            populateTableDropDown()
             filterDataDictionaryByTable()
+            populateDataDropDown("")
         End If
 
     End Sub
@@ -50,32 +51,38 @@ Public Class _Default
 
 #Region "Button Events"
     Protected Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-        DataBind()
+        updateEntry()
     End Sub
 
     Protected Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
         EnableDisableForm("True")
+        populateDataDropDown("")
+        btnAdd.Visible = False
+        lblStatus.Text = "Adding New Entry"
+        lblStatus.Visible = True
         tbTableName.Text = ddlTable.SelectedValue
     End Sub
 
-    Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
-        EnableDisableForm("True")
+    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
+        btnAdd.Visible = True
+        lblStatus.Visible = False
         clearForm()
+        EnableDisableForm("False")
     End Sub
 #End Region
 
 #Region "Helper Subs/Functions"
-    Private Sub updateDescription(des As String)
-        Dim commandText = "UPDATE " & ddlTable.SelectedValue & " SET " & "='@val' WHERE ID = '@row'"
-        Dim mySqlConn As New OleDbConnection(connStr)
+    Private Sub updateEntry()
+        Dim commandText = "UPDATE [DATA_DICTIONARY] SET  COLUMN_NAME = ? WHERE ID = " & GridView1.SelectedRow.Cells(1).Text
+        Dim mySqlConn As New OleDbConnection(ConfigurationManager.ConnectionStrings("AccessConnection").ConnectionString)
         Dim sqlComm As New OleDbCommand()
 
         mySqlConn.Open()
-        'sqlComm.Parameters.Add("@field", OleDbType.)
-        'sqlComm.CommandText = commandText
-        'sqlComm.Parameters.Add(
-        'sqlComm.Connection = mySqlConn
-        SqlDataSource1.UpdateCommand = sqlComm.CommandText
+        sqlComm.Parameters.AddWithValue("COLUMN_NAME", tbColumnName.Text)
+        sqlComm.Connection = mySqlConn
+        sqlComm.CommandText = commandText
+        'SqlDataSource1.UpdateCommand = sqlComm.CommandText
+        'SqlDataSource1.DataBind()
         sqlComm.ExecuteNonQuery()
 
         mySqlConn.Close()
@@ -84,22 +91,39 @@ Public Class _Default
     Private Sub fillSelectedDetails()
         clearForm()
 
-        tbTableName.Text = GridView1.SelectedRow.Cells(1).Text
-        tbColumnName.Text = GridView1.SelectedRow.Cells(2).Text
-        ddlColumnType.SelectedValue = GridView1.SelectedRow.Cells(3).Text
-        tbColumnSize.Text = GridView1.SelectedRow.Cells(4).Text
-        tbPrecision.Text = GridView1.SelectedRow.Cells(5).Text
-        tbScale.Text = GridView1.SelectedRow.Cells(6).Text
-        chkNullable.Checked = GridView1.SelectedRow.Cells(7).Text
-        tbKey.Text = GridView1.SelectedRow.Cells(8).Text
-        If Not (GridView1.SelectedRow.Cells(9).Text.Equals("&nbsp;")) Then
-            tbDescription.Text = GridView1.SelectedRow.Cells(9).Text
-        End If
+        tbTableName.Text = GridView1.SelectedRow.Cells(2).Text
+        tbColumnName.Text = GridView1.SelectedRow.Cells(3).Text
+        ddlColumnType.SelectedIndex = populateDataDropDown(GridView1.SelectedRow.Cells(4).Text)
+        tbColumnSize.Text = GridView1.SelectedRow.Cells(5).Text
+        tbPrecision.Text = GridView1.SelectedRow.Cells(6).Text
+        tbScale.Text = GridView1.SelectedRow.Cells(7).Text
+        chkNullable.Checked = GridView1.SelectedRow.Cells(8).Text
+        tbKey.Text = GridView1.SelectedRow.Cells(9).Text
 
+        If Not (GridView1.SelectedRow.Cells(10).Text.Equals("&nbsp;")) Then
+            tbDescription.Text = GridView1.SelectedRow.Cells(10).Text
+        End If
     End Sub
 
-    Private Sub populateDropDown()
-        Dim mySqlConn As New OleDbConnection(connStr)
+
+    Private Function populateDataDropDown(ByVal str As String) As Integer
+        Dim types As String() = ConfigurationManager.AppSettings("DataTypes").Split(" ")
+        Dim data As String
+        Dim index As Integer = 0
+
+        For Each data In types
+            ddlColumnType.Items.Add(data)
+            If (data.Equals(str)) Then
+                Return index
+            End If
+            index += 1
+        Next
+
+        Return 0
+    End Function
+
+    Private Sub populateTableDropDown()
+        Dim mySqlConn As New OleDbConnection(ConfigurationManager.ConnectionStrings("AccessConnection").ConnectionString)
         Dim sqlComm As New OleDbCommand()
         Dim arrTable As New ArrayList()
 
@@ -120,9 +144,11 @@ Public Class _Default
 
     Private Sub filterDataDictionaryByTable()
         If (ddlTable.SelectedIndex <> 0) Then
+            GridView1.Columns(1).Visible = True
             GridView1.SelectedIndex = -1
             SqlDataSource1.SelectCommand = "SELECT * FROM [DATA_DICTIONARY] WHERE TABLE_NAME='" & ddlTable.SelectedValue & "' ORDER BY COLUMN_NAME"
             GridView1.DataBind()
+            GridView1.Columns(1).Visible = False
             tbTableName.Text = ddlTable.SelectedValue
         End If
     End Sub
@@ -163,7 +189,7 @@ Public Class _Default
 
         'Buttons
         btnSave.Enabled = value
-        btnClear.Enabled = value
+        btnCancel.Enabled = value
     End Sub
 #End Region
 End Class

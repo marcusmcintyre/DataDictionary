@@ -77,6 +77,15 @@ Partial Public Class _Default
     Protected WithEvents btnAdd As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
+    '''lblStatus control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblStatus As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''lblTableName control.
     '''</summary>
     '''<remarks>
@@ -320,11 +329,11 @@ Partial Public Class _Default
     Protected WithEvents btnSave As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
-    '''btnClear control.
+    '''btnCancel control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClear As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnCancel As Global.System.Web.UI.WebControls.Button
 End Class
