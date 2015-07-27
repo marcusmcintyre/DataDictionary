@@ -46,11 +46,10 @@ Public Class _Default
 #Region "Button Events"
     Protected Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         If GridView1.SelectedIndex <> -1 Then
-            updateEntry()
+            modifyEntry("updateCommand")
         Else
-            'insertEntry()
+            modifyEntry("insertCommand")
         End If
-
     End Sub
 
     Protected Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
@@ -70,9 +69,7 @@ Public Class _Default
 #End Region
 
 #Region "Helper Subs/Functions"
-    Private Sub updateEntry()
-        Dim id As Label = GridView1.SelectedRow.FindControl("lblID")
-        Dim commandText = ConfigurationManager.AppSettings("updateCommand")
+    Private Sub modifyEntry(ByVal comm As String)
         Dim mySqlConn As New OleDbConnection(ConfigurationManager.ConnectionStrings("AccessConnection").ConnectionString)
         Dim sqlComm As New OleDbCommand
 
@@ -85,17 +82,19 @@ Public Class _Default
         sqlComm.Parameters.AddWithValue("NULLABILITY", chkNullable.Checked)
         sqlComm.Parameters.AddWithValue("KEY", tbKey.Text)
         sqlComm.Parameters.AddWithValue("DESCRIPTION", tbDescription.Text)
-        sqlComm.Parameters.AddWithValue("ID", id.Text)
+        If GridView1.SelectedIndex <> -1 Then
+            Dim id As Label = GridView1.SelectedRow.FindControl("lblID")
+            sqlComm.Parameters.AddWithValue("ID", id.Text)
+        End If
 
         mySqlConn.Open()
         sqlComm.Connection = mySqlConn
-        sqlComm.CommandText = commandText
+        sqlComm.CommandText = ConfigurationManager.AppSettings(comm)
         sqlComm.ExecuteNonQuery()
         mySqlConn.Close()
 
         ddlTable.SelectedIndex = populateTableDropDown(tbTableName.Text)
         filterDataDictionaryByTable()
-
     End Sub
 
     Private Sub fillSelectedDetails()
@@ -136,7 +135,7 @@ Public Class _Default
         Dim mySqlConn As New OleDbConnection(ConfigurationManager.ConnectionStrings("AccessConnection").ConnectionString)
         Dim sqlComm As New OleDbCommand
         Dim arrTable As New ArrayList
-        Dim index As Integer = 0
+        Dim index As Integer = 1
 
         mySqlConn.Open()
         sqlComm.CommandText = "SELECT DISTINCT [TABLE_NAME] FROM [DATA_DICTIONARY] ORDER BY [TABLE_NAME]"
