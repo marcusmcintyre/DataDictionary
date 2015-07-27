@@ -15,15 +15,29 @@
         <asp:GridView ID="GridView1" runat="server" AllowPaging="True" AutoGenerateColumns="False" DataKeyNames="ID" DataSourceID="SqlDataSource1" PageSize="5">
             <Columns>
                 <asp:CommandField ButtonType="Button" SelectText="    " ShowSelectButton="True" />
-                <asp:BoundField DataField="ID" Visible="false" />
+                <asp:TemplateField>
+                    <ItemTemplate>
+                        <asp:Label ID="lblID" runat="server" Text='<%# Bind("ID") %>' Visible="false"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
                 <asp:BoundField DataField="TABLE_NAME" HeaderText="Table Name" />
                 <asp:BoundField DataField="COLUMN_NAME" HeaderText="Column Name" />
                 <asp:BoundField DataField="COLUMN_TYPE" HeaderText="Column Type" />
-                <asp:BoundField DataField="COLUMN_SIZE" HeaderText="Column Size" ItemStyle-HorizontalAlign="Center" />
-                <asp:BoundField DataField="PRECISION" HeaderText="Precision" ItemStyle-HorizontalAlign="Center" />
-                <asp:BoundField DataField="SCALE" HeaderText="Scale" ItemStyle-HorizontalAlign="Center" />
-                <asp:BoundField DataField="NULLABILITY" HeaderText="Nullability" ItemStyle-HorizontalAlign="Center" />
-                <asp:BoundField DataField="KEY" HeaderText="Key" ItemStyle-HorizontalAlign="Center" />
+                <asp:BoundField DataField="COLUMN_SIZE" HeaderText="Column Size" >
+                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                </asp:BoundField>
+                <asp:BoundField DataField="PRECISION" HeaderText="Precision">
+                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                </asp:BoundField>
+                <asp:BoundField DataField="SCALE" HeaderText="Scale">
+                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                </asp:BoundField>
+                <asp:BoundField DataField="NULLABILITY" HeaderText="Nullability">
+                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                </asp:BoundField>
+                <asp:BoundField DataField="KEY" HeaderText="Key">
+                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                </asp:BoundField>
                 <asp:BoundField DataField="DESCRIPTION" HeaderText="Description" />
             </Columns>
 
@@ -32,7 +46,8 @@
         </asp:GridView>
         <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Marcus\Documents\Database3.accdb" ProviderName="<%$ ConnectionStrings:AccessConnection.ProviderName %>" SelectCommand="SELECT * FROM [DATA_DICTIONARY] WHERE TABLE_NAME=' '"></asp:SqlDataSource><br />
         <asp:Button ID="btnAdd" runat="server" Text="Add New Entry" CausesValidation="false" />
-        <asp:Label ID="lblStatus" runat="server" Text="Adding" Visible="false" /><br /><br />
+        <asp:Button ID="btnCancel" runat="server" Text="Cancel" CausesValidation="false" Visible="false"/> <br /> 
+        <asp:Label ID="lblStatus" runat="server" Text="Adding" Visible="false" /> <br /><br />
 
         <table>
             <tr>
@@ -121,7 +136,6 @@
                 </td>
                 <td>
                     <asp:Button ID="btnSave" runat="server" Text="Save" />
-                    <asp:Button ID="btnCancel" runat="server" Text="Cancel" CausesValidation="false"/>
                 </td>
             </tr>
         </table>

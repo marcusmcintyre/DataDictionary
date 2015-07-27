@@ -11,7 +11,7 @@ Public Class _Default
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not (IsPostBack()) Then
             EnableDisableForm("False")
-            populateTableDropDown()
+            populateTableDropDown("")
             filterDataDictionaryByTable()
             populateDataDropDown("")
         End If
@@ -19,53 +19,51 @@ Public Class _Default
     End Sub
 
     Private Sub ddlTable_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlTable.SelectedIndexChanged
-        If (GridView1.EditIndex <> -1) Then
-            GridView1.EditIndex = -1
+        If (GridView1.SelectedIndex <> -1) Then
+            GridView1.SelectedIndex = -1
         End If
         clearForm()
         filterDataDictionaryByTable()
     End Sub
 
 #Region "GridView Events"
-
     Private Sub GridView1_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles GridView1.PageIndexChanging
+        GridView1.SelectedIndex = -1
+        clearForm()
+        EnableDisableForm("False")
         filterDataDictionaryByTable()
-    End Sub
-    Private Sub GridView1_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles GridView1.RowCommand
-
-    End Sub
-
-    Private Sub GridView1_SelectedIndexChanging(sender As Object, e As GridViewSelectEventArgs) Handles GridView1.SelectedIndexChanging
-
     End Sub
 
     Protected Sub GridView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles GridView1.SelectedIndexChanged
         If (GridView1.SelectedIndex <> -1) Then
+            lblStatus.Text = "Updating Entry: " & GridView1.Rows(GridView1.SelectedIndex).Cells(2).Text & ", " & GridView1.Rows(GridView1.SelectedIndex).Cells(3).Text
             EnableDisableForm("True")
             fillSelectedDetails()
         End If
     End Sub
-
-
 #End Region
 
 #Region "Button Events"
     Protected Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-        updateEntry()
+        If GridView1.SelectedIndex <> -1 Then
+            updateEntry()
+        Else
+            'insertEntry()
+        End If
+
     End Sub
 
     Protected Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
-        EnableDisableForm("True")
-        populateDataDropDown("")
-        btnAdd.Visible = False
         lblStatus.Text = "Adding New Entry"
-        lblStatus.Visible = True
         tbTableName.Text = ddlTable.SelectedValue
+        EnableDisableForm("True")
     End Sub
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         btnAdd.Visible = True
+        btnCancel.Visible = False
         lblStatus.Visible = False
+        GridView1.SelectedIndex = -1
         clearForm()
         EnableDisableForm("False")
     End Sub
@@ -73,19 +71,31 @@ Public Class _Default
 
 #Region "Helper Subs/Functions"
     Private Sub updateEntry()
-        Dim commandText = "UPDATE [DATA_DICTIONARY] SET  COLUMN_NAME = ? WHERE ID = " & GridView1.SelectedRow.Cells(1).Text
+        Dim id As Label = GridView1.SelectedRow.FindControl("lblID")
+        Dim commandText = ConfigurationManager.AppSettings("updateCommand")
         Dim mySqlConn As New OleDbConnection(ConfigurationManager.ConnectionStrings("AccessConnection").ConnectionString)
-        Dim sqlComm As New OleDbCommand()
+        Dim sqlComm As New OleDbCommand
+
+        sqlComm.Parameters.AddWithValue("TABLE_NAME", tbTableName.Text)
+        sqlComm.Parameters.AddWithValue("COLUMN_NAME", tbColumnName.Text)
+        sqlComm.Parameters.AddWithValue("COLUMN_TYPE", ddlColumnType.SelectedValue)
+        sqlComm.Parameters.AddWithValue("COLUMN_SIZE", tbColumnSize.Text)
+        sqlComm.Parameters.AddWithValue("PRECISION", tbPrecision.Text)
+        sqlComm.Parameters.AddWithValue("SCALE", tbScale.Text)
+        sqlComm.Parameters.AddWithValue("NULLABILITY", chkNullable.Checked)
+        sqlComm.Parameters.AddWithValue("KEY", tbKey.Text)
+        sqlComm.Parameters.AddWithValue("DESCRIPTION", tbDescription.Text)
+        sqlComm.Parameters.AddWithValue("ID", id.Text)
 
         mySqlConn.Open()
-        sqlComm.Parameters.AddWithValue("COLUMN_NAME", tbColumnName.Text)
         sqlComm.Connection = mySqlConn
         sqlComm.CommandText = commandText
-        'SqlDataSource1.UpdateCommand = sqlComm.CommandText
-        'SqlDataSource1.DataBind()
         sqlComm.ExecuteNonQuery()
-
         mySqlConn.Close()
+
+        ddlTable.SelectedIndex = populateTableDropDown(tbTableName.Text)
+        filterDataDictionaryByTable()
+
     End Sub
 
     Private Sub fillSelectedDetails()
@@ -122,31 +132,35 @@ Public Class _Default
         Return 0
     End Function
 
-    Private Sub populateTableDropDown()
+    Private Function populateTableDropDown(ByVal str As String) As Integer
         Dim mySqlConn As New OleDbConnection(ConfigurationManager.ConnectionStrings("AccessConnection").ConnectionString)
-        Dim sqlComm As New OleDbCommand()
-        Dim arrTable As New ArrayList()
+        Dim sqlComm As New OleDbCommand
+        Dim arrTable As New ArrayList
+        Dim index As Integer = 0
 
         mySqlConn.Open()
-        sqlComm.CommandText = "SELECT DISTINCT TABLE_NAME FROM [DATA_DICTIONARY] ORDER BY TABLE_NAME"
+        sqlComm.CommandText = "SELECT DISTINCT [TABLE_NAME] FROM [DATA_DICTIONARY] ORDER BY [TABLE_NAME]"
         sqlComm.Connection = mySqlConn
         arrTable.Add("")
 
         Dim reader As OleDbDataReader = sqlComm.ExecuteReader()
         While reader.Read()
             arrTable.Add(reader(0).ToString)
+            If Not (reader(0).ToString.Equals(str)) Then
+                index += 1
+            End If
         End While
 
         ddlTable.DataSource = arrTable
         ddlTable.DataBind()
         mySqlConn.Close()
-    End Sub
+
+        Return index
+    End Function
 
     Private Sub filterDataDictionaryByTable()
         If (ddlTable.SelectedIndex <> 0) Then
-            GridView1.Columns(1).Visible = True
-            GridView1.SelectedIndex = -1
-            SqlDataSource1.SelectCommand = "SELECT * FROM [DATA_DICTIONARY] WHERE TABLE_NAME='" & ddlTable.SelectedValue & "' ORDER BY COLUMN_NAME"
+            SqlDataSource1.SelectCommand = "SELECT * FROM [DATA_DICTIONARY] WHERE [TABLE_NAME]='" & ddlTable.SelectedValue & "' ORDER BY [COLUMN_NAME]"
             GridView1.DataBind()
             GridView1.Columns(1).Visible = False
             tbTableName.Text = ddlTable.SelectedValue
@@ -190,6 +204,10 @@ Public Class _Default
         'Buttons
         btnSave.Enabled = value
         btnCancel.Enabled = value
+        btnCancel.Visible = value
+        btnAdd.Visible = Not CType(value, Boolean)
+
+        lblStatus.Visible = value
     End Sub
 #End Region
 End Class
