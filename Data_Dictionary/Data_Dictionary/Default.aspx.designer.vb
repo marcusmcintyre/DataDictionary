@@ -23,15 +23,6 @@ Partial Public Class _Default
     Protected WithEvents form1 As Global.System.Web.UI.HtmlControls.HtmlForm
 
     '''<summary>
-    '''Label0 control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents Label0 As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
     '''Label16 control.
     '''</summary>
     '''<remarks>
@@ -68,6 +59,15 @@ Partial Public Class _Default
     Protected WithEvents SqlDataSource1 As Global.System.Web.UI.WebControls.SqlDataSource
 
     '''<summary>
+    '''btnCancel control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnCancel As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
     '''btnAdd control.
     '''</summary>
     '''<remarks>
@@ -77,13 +77,13 @@ Partial Public Class _Default
     Protected WithEvents btnAdd As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
-    '''btnCancel control.
+    '''btnDelete control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnCancel As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnDelete As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
     '''lblStatus control.
@@ -203,6 +203,15 @@ Partial Public Class _Default
     Protected WithEvents rfvColumnSize As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
     '''<summary>
+    '''rowPrecision control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents rowPrecision As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
     '''lblPrecision control.
     '''</summary>
     '''<remarks>
@@ -228,6 +237,15 @@ Partial Public Class _Default
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents rfvPrecision As Global.System.Web.UI.WebControls.RequiredFieldValidator
+
+    '''<summary>
+    '''rowScale control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents rowScale As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
     '''<summary>
     '''lblScale control.

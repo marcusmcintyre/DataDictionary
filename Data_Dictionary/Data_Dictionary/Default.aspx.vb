@@ -10,8 +10,9 @@ Public Class _Default
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not (IsPostBack()) Then
+            ViewState("ps") = 0
             EnableDisableForm("False")
-            populateTableDropDown("")
+            populateTableDropDown()
             filterDataDictionaryByTable()
             populateDataDropDown("")
         End If
@@ -26,6 +27,37 @@ Public Class _Default
         filterDataDictionaryByTable()
     End Sub
 
+
+    Private Sub ddlColumnType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlColumnType.SelectedIndexChanged
+        checkDataDropDown()
+    End Sub
+
+    Private Function checkDataDropDown() As Boolean
+        If (ddlColumnType.SelectedIndex = populateDataDropDown("numeric(p,s)") _
+            Or ddlColumnType.SelectedIndex = populateDataDropDown("decimal(p,s)")) Then
+            If (ViewState("ps") = 0) Then
+                tbPrecision.Text = ""
+                tbScale.Text = ""
+                rfvPrecision.Enabled = True
+                rfvScale.Enabled = True
+                tbPrecision.Enabled = True
+                tbScale.Enabled = True
+                ViewState("ps") = 1
+            End If
+            Return True
+        Else
+            tbPrecision.Text = ""
+            tbScale.Text = ""
+            rfvPrecision.Enabled = False
+            rfvScale.Enabled = False
+            tbPrecision.Enabled = False
+            tbScale.Enabled = False
+            ViewState("ps") = 0
+            Return False
+        End If
+        Return False
+    End Function
+
 #Region "GridView Events"
     Private Sub GridView1_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles GridView1.PageIndexChanging
         GridView1.SelectedIndex = -1
@@ -36,7 +68,9 @@ Public Class _Default
 
     Protected Sub GridView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles GridView1.SelectedIndexChanged
         If (GridView1.SelectedIndex <> -1) Then
-            lblStatus.Text = "Updating Entry: " & GridView1.Rows(GridView1.SelectedIndex).Cells(2).Text & ", " & GridView1.Rows(GridView1.SelectedIndex).Cells(3).Text
+            Dim id As Label = GridView1.SelectedRow.FindControl("lblID")
+            lblStatus.Text = "Updating Entry (" & id.Text & _
+                "): " & GridView1.Rows(GridView1.SelectedIndex).Cells(2).Text & ", " & GridView1.Rows(GridView1.SelectedIndex).Cells(3).Text
             EnableDisableForm("True")
             fillSelectedDetails()
         End If
@@ -45,26 +79,34 @@ Public Class _Default
 
 #Region "Button Events"
     Protected Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
+        Dim comm As String = ""
         If GridView1.SelectedIndex <> -1 Then
-            modifyEntry("updateCommand")
+            comm = "updateCommand"
         Else
-            modifyEntry("insertCommand")
+            comm = "insertCommand"
         End If
+        modifyEntry(comm)
     End Sub
 
     Protected Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
         lblStatus.Text = "Adding New Entry"
+        clearForm()
         tbTableName.Text = ddlTable.SelectedValue
+        ddlColumnType.SelectedIndex = -1
+        GridView1.SelectedIndex = -1
         EnableDisableForm("True")
     End Sub
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
-        btnAdd.Visible = True
-        btnCancel.Visible = False
-        lblStatus.Visible = False
-        GridView1.SelectedIndex = -1
+        If (GridView1.SelectedIndex = -1) Then
+            EnableDisableForm("False")
+        End If
         clearForm()
-        EnableDisableForm("False")
+        filterDataDictionaryByTable()
+    End Sub
+
+    Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
+        modifyEntry("deleteCommand")
     End Sub
 #End Region
 
@@ -73,18 +115,29 @@ Public Class _Default
         Dim mySqlConn As New OleDbConnection(ConfigurationManager.ConnectionStrings("AccessConnection").ConnectionString)
         Dim sqlComm As New OleDbCommand
 
-        sqlComm.Parameters.AddWithValue("TABLE_NAME", tbTableName.Text)
-        sqlComm.Parameters.AddWithValue("COLUMN_NAME", tbColumnName.Text)
-        sqlComm.Parameters.AddWithValue("COLUMN_TYPE", ddlColumnType.SelectedValue)
-        sqlComm.Parameters.AddWithValue("COLUMN_SIZE", tbColumnSize.Text)
-        sqlComm.Parameters.AddWithValue("PRECISION", tbPrecision.Text)
-        sqlComm.Parameters.AddWithValue("SCALE", tbScale.Text)
-        sqlComm.Parameters.AddWithValue("NULLABILITY", chkNullable.Checked)
-        sqlComm.Parameters.AddWithValue("KEY", tbKey.Text)
-        sqlComm.Parameters.AddWithValue("DESCRIPTION", tbDescription.Text)
-        If GridView1.SelectedIndex <> -1 Then
+        If (comm.Equals("deleteCommand")) Then
             Dim id As Label = GridView1.SelectedRow.FindControl("lblID")
             sqlComm.Parameters.AddWithValue("ID", id.Text)
+        Else
+
+            sqlComm.Parameters.AddWithValue("TABLE_NAME", tbTableName.Text)
+            sqlComm.Parameters.AddWithValue("COLUMN_NAME", tbColumnName.Text)
+            sqlComm.Parameters.AddWithValue("COLUMN_TYPE", ddlColumnType.SelectedValue)
+            sqlComm.Parameters.AddWithValue("COLUMN_SIZE", tbColumnSize.Text)
+            If (checkDataDropDown()) Then
+                sqlComm.Parameters.AddWithValue("PRECISION", tbPrecision.Text)
+                sqlComm.Parameters.AddWithValue("SCALE", tbScale.Text)
+            Else
+                sqlComm.Parameters.AddWithValue("PRECISION", 0)
+                sqlComm.Parameters.AddWithValue("SCALE", 0)
+            End If
+            sqlComm.Parameters.AddWithValue("NULLABILITY", chkNullable.Checked)
+            sqlComm.Parameters.AddWithValue("KEY", tbKey.Text)
+            sqlComm.Parameters.AddWithValue("DESCRIPTION", tbDescription.Text)
+            If GridView1.SelectedIndex <> -1 Then
+                Dim id As Label = GridView1.SelectedRow.FindControl("lblID")
+                sqlComm.Parameters.AddWithValue("ID", id.Text)
+            End If
         End If
 
         mySqlConn.Open()
@@ -93,8 +146,37 @@ Public Class _Default
         sqlComm.ExecuteNonQuery()
         mySqlConn.Close()
 
-        ddlTable.SelectedIndex = populateTableDropDown(tbTableName.Text)
+        populateTableDropDown()
+        ddlTable.SelectedValue = tbTableName.Text
         filterDataDictionaryByTable()
+        selectGV(GridView1, tbColumnName.Text)
+    End Sub
+
+    Private Sub selectGV(ByRef gv As GridView, ByVal str As String)
+        Dim x, i As Integer
+        Dim strCol As String
+        Dim intRowFound, intPageFound As Integer
+        'EACH PAGE
+        For i = 0 To gv.PageCount
+            gv.PageIndex = i
+            gv.DataBind()
+            If gv.Rows.Count > 0 Then
+                'EACH ROW
+                For x = 0 To gv.Rows.Count - 1
+                    strCol = gv.Rows(x).Cells(3).Text
+                    'FOUND IT
+                    If strCol = tbColumnName.Text Then
+                        intRowFound = x
+                        intPageFound = gv.PageIndex
+                    End If
+                Next
+            End If
+        Next
+
+        gv.PageIndex = intPageFound
+        gv.SelectedIndex = intRowFound
+        gv.DataBind()
+
     End Sub
 
     Private Sub fillSelectedDetails()
@@ -114,7 +196,6 @@ Public Class _Default
         End If
     End Sub
 
-
     Private Function populateDataDropDown(ByVal str As String) As Integer
         Dim types As String() = ConfigurationManager.AppSettings("DataTypes").Split(" ")
         Dim data As String
@@ -127,15 +208,13 @@ Public Class _Default
             End If
             index += 1
         Next
-
         Return 0
     End Function
 
-    Private Function populateTableDropDown(ByVal str As String) As Integer
+    Private Sub populateTableDropDown()
         Dim mySqlConn As New OleDbConnection(ConfigurationManager.ConnectionStrings("AccessConnection").ConnectionString)
         Dim sqlComm As New OleDbCommand
         Dim arrTable As New ArrayList
-        Dim index As Integer = 1
 
         mySqlConn.Open()
         sqlComm.CommandText = "SELECT DISTINCT [TABLE_NAME] FROM [DATA_DICTIONARY] ORDER BY [TABLE_NAME]"
@@ -145,23 +224,16 @@ Public Class _Default
         Dim reader As OleDbDataReader = sqlComm.ExecuteReader()
         While reader.Read()
             arrTable.Add(reader(0).ToString)
-            If Not (reader(0).ToString.Equals(str)) Then
-                index += 1
-            End If
         End While
 
         ddlTable.DataSource = arrTable
         ddlTable.DataBind()
         mySqlConn.Close()
-
-        Return index
-    End Function
+    End Sub
 
     Private Sub filterDataDictionaryByTable()
         If (ddlTable.SelectedIndex <> 0) Then
-            SqlDataSource1.SelectCommand = "SELECT * FROM [DATA_DICTIONARY] WHERE [TABLE_NAME]='" & ddlTable.SelectedValue & "' ORDER BY [COLUMN_NAME]"
             GridView1.DataBind()
-            GridView1.Columns(1).Visible = False
             tbTableName.Text = ddlTable.SelectedValue
         End If
     End Sub
@@ -184,27 +256,34 @@ Public Class _Default
         tbColumnName.Enabled = value
         ddlColumnType.Enabled = value
         tbColumnSize.Enabled = value
-        tbPrecision.Enabled = value
-        tbScale.Enabled = value
         chkNullable.Enabled = value
         tbKey.Enabled = value
         tbDescription.Enabled = value
+
+        If (value) Then
+            checkDataDropDown()
+        Else
+            tbPrecision.Enabled = False
+            tbScale.Enabled = False
+        End If
+
 
         'Validators
         rfvTableName.Enabled = value
         rfvColumnName.Enabled = value
         rfvColumnType.Enabled = value
         rfvColumnSize.Enabled = value
-        rfvPrecision.Enabled = value
-        rfvScale.Enabled = value
         rfvKey.Enabled = value
         rfvDescription.Enabled = value
 
         'Buttons
         btnSave.Enabled = value
         btnCancel.Enabled = value
-        btnCancel.Visible = value
-        btnAdd.Visible = Not CType(value, Boolean)
+        If (GridView1.SelectedIndex <> -1) Then
+            btnDelete.Enabled = True
+        Else
+            btnDelete.Enabled = False
+        End If
 
         lblStatus.Visible = value
     End Sub

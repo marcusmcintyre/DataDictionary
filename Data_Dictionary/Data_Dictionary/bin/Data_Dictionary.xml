@@ -39,14 +39,6 @@ form1 control.
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
-</member><member name="F:Data_Dictionary._Default.Label0">
-	<summary>
-Label0 control.
-</summary>
-	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
 </member><member name="F:Data_Dictionary._Default.Label16">
 	<summary>
 Label16 control.
@@ -79,6 +71,14 @@ SqlDataSource1 control.
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
+</member><member name="F:Data_Dictionary._Default.btnCancel">
+	<summary>
+btnCancel control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
 </member><member name="F:Data_Dictionary._Default.btnAdd">
 	<summary>
 btnAdd control.
@@ -87,9 +87,9 @@ btnAdd control.
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
-</member><member name="F:Data_Dictionary._Default.btnCancel">
+</member><member name="F:Data_Dictionary._Default.btnDelete">
 	<summary>
-btnCancel control.
+btnDelete control.
 </summary>
 	<remarks>
 Auto-generated field.
@@ -199,6 +199,14 @@ rfvColumnSize control.
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
+</member><member name="F:Data_Dictionary._Default.rowPrecision">
+	<summary>
+rowPrecision control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
 </member><member name="F:Data_Dictionary._Default.lblPrecision">
 	<summary>
 lblPrecision control.
@@ -218,6 +226,14 @@ To modify move field declaration from designer file to code-behind file.
 </member><member name="F:Data_Dictionary._Default.rfvPrecision">
 	<summary>
 rfvPrecision control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.rowScale">
+	<summary>
+rowScale control.
 </summary>
 	<remarks>
 Auto-generated field.

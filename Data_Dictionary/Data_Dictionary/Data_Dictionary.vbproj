@@ -82,6 +82,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
+    <Content Include="home.js" />
+    <Content Include="Style.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

@@ -4,20 +4,24 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    <link rel="stylesheet" type="text/css" href="Style.css" />
+    <script type="text/javascript" src="home.js"></script>
     <title></title>
 </head>
 <body>
+    <header>
+        <a href="Default.aspx"><h1>Data Dictionary</h1></a>
+    </header>
     <form id="form1" runat="server">
     <div>
-        <asp:Label ID="Label0" runat="server" Text="Data Dictionary" Font-Size="X-Large"></asp:Label><br />
         <asp:Label ID="Label16" runat="server" Text="Choose Table: "></asp:Label>
         <asp:DropDownList ID="ddlTable" runat="server" AutoPostBack="True"></asp:DropDownList><br /><br />
         <asp:GridView ID="GridView1" runat="server" AllowPaging="True" AutoGenerateColumns="False" DataKeyNames="ID" DataSourceID="SqlDataSource1" PageSize="5">
             <Columns>
                 <asp:CommandField ButtonType="Button" SelectText="    " ShowSelectButton="True" />
-                <asp:TemplateField>
+                <asp:TemplateField HeaderText="ID">
                     <ItemTemplate>
-                        <asp:Label ID="lblID" runat="server" Text='<%# Bind("ID") %>' Visible="false"></asp:Label>
+                        <asp:Label ID="lblID" runat="server" Text='<%# Bind("ID") %>' ></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:BoundField DataField="TABLE_NAME" HeaderText="Table Name" />
@@ -44,9 +48,19 @@
             <RowStyle BackColor="White" />
             <SelectedRowStyle BackColor="LightCyan" />
         </asp:GridView>
-        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Marcus\Documents\Database3.accdb" ProviderName="<%$ ConnectionStrings:AccessConnection.ProviderName %>" SelectCommand="SELECT * FROM [DATA_DICTIONARY] WHERE TABLE_NAME=' '"></asp:SqlDataSource><br />
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server"
+            ConnectionString="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Marcus\Documents\Database3.accdb"
+            ProviderName="<%$ ConnectionStrings:AccessConnection.ProviderName %>"
+            SelectCommand="SELECT * FROM [DATA_DICTIONARY] WHERE TABLE_NAME = @Table ORDER BY [COLUMN_NAME]" >
+            <SelectParameters>
+                <asp:ControlParameter Name="Table"
+                    ControlID="ddlTable"
+                    PropertyName="SelectedValue" />
+            </SelectParameters>
+        </asp:SqlDataSource><br />
+        <asp:Button ID="btnCancel" runat="server" Text="Cancel" CausesValidation="false"/>
         <asp:Button ID="btnAdd" runat="server" Text="Add New Entry" CausesValidation="false" />
-        <asp:Button ID="btnCancel" runat="server" Text="Cancel" CausesValidation="false" Visible="false"/> <br /> 
+        <asp:Button ID="btnDelete" runat="server" OnClientClick="return confirmation();" Text="Delete" CausesValidation="false" /> <br /> 
         <asp:Label ID="lblStatus" runat="server" Text="Adding" Visible="false" /> <br /><br />
 
         <table>
@@ -73,7 +87,7 @@
                     <asp:Label ID="lblColumnType" runat="server" Text="Column Type: "></asp:Label>
                 </td>
                 <td>
-                    <asp:DropDownList ID="ddlColumnType" runat="server"></asp:DropDownList>
+                    <asp:DropDownList ID="ddlColumnType" runat="server" AutoPostBack="True"></asp:DropDownList>
                     <asp:RequiredFieldValidator ID="rfvColumnType" runat="server" ControlToValidate="ddlColumnType"></asp:RequiredFieldValidator>
                 </td>
             </tr>
@@ -86,7 +100,7 @@
                     <asp:RequiredFieldValidator id="rfvColumnSize" runat="server" ControlToValidate="tbColumnSize" ErrorMessage="You must enter a Column Size.">*</asp:RequiredFieldValidator>
                 </td>
             </tr>
-            <tr>
+            <tr id="rowPrecision" runat="server">
                 <td>
                     <asp:Label ID="lblPrecision" runat="server" Text="Precision: "></asp:Label>
                 </td>
@@ -95,7 +109,7 @@
                     <asp:RequiredFieldValidator id="rfvPrecision" runat="server" ControlToValidate="tbPrecision" ErrorMessage="You must enter a Precision value.">*</asp:RequiredFieldValidator>
                 </td>
             </tr>
-            <tr>
+            <tr id="rowScale" runat="server">
                 <td>
                     <asp:Label ID="lblScale" runat="server" Text="Scale: "></asp:Label>
                 </td>
