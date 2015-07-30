@@ -41,13 +41,13 @@ Partial Public Class _Default
     Protected WithEvents ddlTable As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
-    '''GridView1 control.
+    '''lvDictionary control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents GridView1 As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents lvDictionary As Global.System.Web.UI.WebControls.ListView
 
     '''<summary>
     '''SqlDataSource1 control.

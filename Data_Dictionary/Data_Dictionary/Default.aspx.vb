@@ -20,8 +20,8 @@ Public Class _Default
     End Sub
 
     Private Sub ddlTable_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlTable.SelectedIndexChanged
-        If (GridView1.SelectedIndex <> -1) Then
-            GridView1.SelectedIndex = -1
+        If (lvDictionary.SelectedIndex <> -1) Then
+            lvDictionary.SelectedIndex = -1
         End If
         clearForm()
         filterDataDictionaryByTable()
@@ -59,18 +59,13 @@ Public Class _Default
     End Function
 
 #Region "GridView Events"
-    Private Sub GridView1_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles GridView1.PageIndexChanging
-        GridView1.SelectedIndex = -1
-        clearForm()
-        EnableDisableForm("False")
-        filterDataDictionaryByTable()
-    End Sub
 
-    Protected Sub GridView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles GridView1.SelectedIndexChanged
-        If (GridView1.SelectedIndex <> -1) Then
-            Dim id As Label = GridView1.SelectedRow.FindControl("lblID")
-            lblStatus.Text = "Updating Entry (" & id.Text & _
-                "): " & GridView1.Rows(GridView1.SelectedIndex).Cells(2).Text & ", " & GridView1.Rows(GridView1.SelectedIndex).Cells(3).Text
+    Protected Sub lvDictionary_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvDictionary.SelectedIndexChanged
+        If (lvDictionary.SelectedIndex <> -1) Then
+            Dim id As Label = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblID")
+            Dim table As Label = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblTN")
+            Dim column As Label = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblCN")
+            lblStatus.Text = "Updating Entry (" & id.Text & "): " & table.Text & ", " & column.Text
             EnableDisableForm("True")
             fillSelectedDetails()
         End If
@@ -80,7 +75,7 @@ Public Class _Default
 #Region "Button Events"
     Protected Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Dim comm As String = ""
-        If GridView1.SelectedIndex <> -1 Then
+        If lvDictionary.SelectedIndex <> -1 Then
             comm = "updateCommand"
         Else
             comm = "insertCommand"
@@ -93,12 +88,12 @@ Public Class _Default
         clearForm()
         tbTableName.Text = ddlTable.SelectedValue
         ddlColumnType.SelectedIndex = -1
-        GridView1.SelectedIndex = -1
+        lvDictionary.SelectedIndex = -1
         EnableDisableForm("True")
     End Sub
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
-        If (GridView1.SelectedIndex = -1) Then
+        If (lvDictionary.SelectedIndex = -1) Then
             EnableDisableForm("False")
         End If
         clearForm()
@@ -116,7 +111,7 @@ Public Class _Default
         Dim sqlComm As New OleDbCommand
 
         If (comm.Equals("deleteCommand")) Then
-            Dim id As Label = GridView1.SelectedRow.FindControl("lblID")
+            Dim id As Label = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblID")
             sqlComm.Parameters.AddWithValue("ID", id.Text)
         Else
 
@@ -134,8 +129,8 @@ Public Class _Default
             sqlComm.Parameters.AddWithValue("NULLABILITY", chkNullable.Checked)
             sqlComm.Parameters.AddWithValue("KEY", tbKey.Text)
             sqlComm.Parameters.AddWithValue("DESCRIPTION", tbDescription.Text)
-            If GridView1.SelectedIndex <> -1 Then
-                Dim id As Label = GridView1.SelectedRow.FindControl("lblID")
+            If lvDictionary.SelectedIndex <> -1 Then
+                Dim id As Label = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblID")
                 sqlComm.Parameters.AddWithValue("ID", id.Text)
             End If
         End If
@@ -149,50 +144,62 @@ Public Class _Default
         populateTableDropDown()
         ddlTable.SelectedValue = tbTableName.Text
         filterDataDictionaryByTable()
-        selectGV(GridView1, tbColumnName.Text)
+        selectlv(lvDictionary, tbColumnName.Text)
     End Sub
 
-    Private Sub selectGV(ByRef gv As GridView, ByVal str As String)
+    Private Sub selectlv(ByRef lv As ListView, ByVal str As String)
         Dim x, i As Integer
-        Dim strCol As String
-        Dim intRowFound, intPageFound As Integer
-        'EACH PAGE
-        For i = 0 To gv.PageCount
-            gv.PageIndex = i
-            gv.DataBind()
-            If gv.Rows.Count > 0 Then
-                'EACH ROW
-                For x = 0 To gv.Rows.Count - 1
-                    strCol = gv.Rows(x).Cells(3).Text
-                    'FOUND IT
-                    If strCol = tbColumnName.Text Then
-                        intRowFound = x
-                        intPageFound = gv.PageIndex
-                    End If
-                Next
-            End If
-        Next
+        Dim lblCol As Label
+        Dim intRowFound As Integer
 
-        gv.PageIndex = intPageFound
-        gv.SelectedIndex = intRowFound
-        gv.DataBind()
+        If lv.Items.Count > 0 Then
+            'EACH ROW
+            For x = 0 To lv.Items.Count - 1
+                lblCol = lv.Items(x).FindControl("lblCN")
+                'FOUND IT
+                If lblCol.Text.Equals(str) Then
+                    intRowFound = x
+                End If
+            Next
+        End If
+
+        lv.SelectedIndex = intRowFound
+        lv.DataBind()
 
     End Sub
 
     Private Sub fillSelectedDetails()
         clearForm()
+        Dim lbl As Label
+        Dim chk As CheckBox
 
-        tbTableName.Text = GridView1.SelectedRow.Cells(2).Text
-        tbColumnName.Text = GridView1.SelectedRow.Cells(3).Text
-        ddlColumnType.SelectedIndex = populateDataDropDown(GridView1.SelectedRow.Cells(4).Text)
-        tbColumnSize.Text = GridView1.SelectedRow.Cells(5).Text
-        tbPrecision.Text = GridView1.SelectedRow.Cells(6).Text
-        tbScale.Text = GridView1.SelectedRow.Cells(7).Text
-        chkNullable.Checked = GridView1.SelectedRow.Cells(8).Text
-        tbKey.Text = GridView1.SelectedRow.Cells(9).Text
+        lbl = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblTN")
+        tbTableName.Text = lbl.Text
 
-        If Not (GridView1.SelectedRow.Cells(10).Text.Equals("&nbsp;")) Then
-            tbDescription.Text = GridView1.SelectedRow.Cells(10).Text
+        lbl = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblCN")
+        tbColumnName.Text = lbl.Text
+
+        lbl = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblCT")
+        ddlColumnType.SelectedIndex = populateDataDropDown(lbl.Text)
+
+        lbl = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblCS")
+        tbColumnSize.Text = lbl.Text
+
+        lbl = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblP")
+        tbPrecision.Text = lbl.Text
+
+        lbl = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblS")
+        tbScale.Text = lbl.Text
+
+        chk = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("chkN")
+        chkNullable.Checked = chk.Checked
+
+        lbl = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblK")
+        tbKey.Text = lbl.Text
+
+        lbl = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblD")
+        If Not (lbl.Text.Equals("&nbsp;")) Then
+            tbDescription.Text = lbl.Text
         End If
     End Sub
 
@@ -233,7 +240,7 @@ Public Class _Default
 
     Private Sub filterDataDictionaryByTable()
         If (ddlTable.SelectedIndex <> 0) Then
-            GridView1.DataBind()
+            lvDictionary.DataBind()
             tbTableName.Text = ddlTable.SelectedValue
         End If
     End Sub
@@ -279,7 +286,7 @@ Public Class _Default
         'Buttons
         btnSave.Enabled = value
         btnCancel.Enabled = value
-        If (GridView1.SelectedIndex <> -1) Then
+        If (lvDictionary.SelectedIndex <> -1) Then
             btnDelete.Enabled = True
         Else
             btnDelete.Enabled = False

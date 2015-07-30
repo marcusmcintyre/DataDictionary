@@ -1,43 +1,49 @@
 ﻿html {
     height: 100%;
-    width:100%;
+    width: 100%;
 }
 
 body {
-    width:90%;
-    height:100%;
+    width: 90%;
+    height: 100%;
     margin: 0 auto;
     display: table;
 }
 
 header {
-    height:10%;
+    height: 10vh;
 }
 
-form {
-
+.Even {
+    background-color: white;
 }
 
-table {
+.Odd {
+    background-color: #F5F5F5;
+}
+
+
+.Selected {
+    background-color: lightcyan;
 }
 
 a {
     text-decoration: none;
-    color:black;
+    color: black;
 }
 
-a:link {
-    text-decoration: none;
-}
+    a:link {
+        text-decoration: none;
+    }
 
-a:visited {
-    text-decoration: none;
-}
+    a:visited {
+        text-decoration: none;
+    }
 
-a:hover {
-    text-decoration: none;
-}
+    a:hover {
+        text-decoration: none;
+    }
 
-a:active {
-    text-decoration: none;
-}
+    a:active {
+        text-decoration: none;
+    }

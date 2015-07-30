@@ -55,9 +55,9 @@ ddlTable control.
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
-</member><member name="F:Data_Dictionary._Default.GridView1">
+</member><member name="F:Data_Dictionary._Default.lvDictionary">
 	<summary>
-GridView1 control.
+lvDictionary control.
 </summary>
 	<remarks>
 Auto-generated field.
