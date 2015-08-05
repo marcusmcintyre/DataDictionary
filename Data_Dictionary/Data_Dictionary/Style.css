@@ -14,16 +14,73 @@ header {
     height: 10vh;
 }
 
-.Even {
+table {
+}
+
+.Details {
+    width: 70%;
+}
+
+.Row {
+    border: 1px solid gray;
+    margin-bottom: 7px;
+    position:relative;
+    width: 100%;
     background-color: white;
 }
 
-.Odd {
-    background-color: #F5F5F5;
+.Select {
+    float:left;
+
+}
+
+.Id {
+    position: absolute;
+    right: 0px;
+}
+
+.Black {
+    background-color: black;
+}
+
+.TableName {
+    float: left;
+}
+
+.ColumnName {
+    float: left;
+}
+
+.ColumnType {
+    float:left;
+}
+
+.ColumnSize {
+    float:right;
+}
+
+.Precision {
+    float:left;
+}
+
+.Scale {
+    float:left;
+}
+
+.Nullable {
+
+}
+
+.Key {
+    float:left;
+}
+
+.Description {
+
 }
 
 
-.Selected {
+.Row-Selected {
     background-color: lightcyan;
 }
 
