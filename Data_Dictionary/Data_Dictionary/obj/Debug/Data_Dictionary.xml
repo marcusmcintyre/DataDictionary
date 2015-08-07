@@ -55,6 +55,62 @@ contain control.
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
+</member><member name="F:Data_Dictionary._Default.Label16">
+	<summary>
+Label16 control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.ddlTable">
+	<summary>
+ddlTable control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.tbSearch">
+	<summary>
+tbSearch control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.btnSearch">
+	<summary>
+btnSearch control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.lblExactMatch">
+	<summary>
+lblExactMatch control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.chkExactMatch">
+	<summary>
+chkExactMatch control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.gvDictionary">
+	<summary>
+gvDictionary control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
 </member><member name="F:Data_Dictionary._Default.lblTableName">
 	<summary>
 lblTableName control.
@@ -322,30 +378,6 @@ To modify move field declaration from designer file to code-behind file.
 </member><member name="F:Data_Dictionary._Default.lblCurrID">
 	<summary>
 lblCurrID control.
-</summary>
-	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
-</member><member name="F:Data_Dictionary._Default.Label16">
-	<summary>
-Label16 control.
-</summary>
-	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
-</member><member name="F:Data_Dictionary._Default.ddlTable">
-	<summary>
-ddlTable control.
-</summary>
-	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
-</member><member name="F:Data_Dictionary._Default.lvDictionary">
-	<summary>
-lvDictionary control.
 </summary>
 	<remarks>
 Auto-generated field.

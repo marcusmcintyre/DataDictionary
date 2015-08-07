@@ -3,3 +3,7 @@
         return true;
     else return false;
 }
+
+function success() {
+    alert("You successfully saved this Entry.");
+}

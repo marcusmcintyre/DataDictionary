@@ -19,8 +19,8 @@ Public Class _Default
 #End Region
 #Region "DropDown Events"
     Private Sub ddlTable_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlTable.SelectedIndexChanged
-        If (lvDictionary.SelectedIndex <> -1) Then
-            lvDictionary.SelectedIndex = -1
+        If (gvDictionary.SelectedIndex <> -1) Then
+            gvDictionary.SelectedIndex = -1
         End If
         clearForm()
         updateStatus(1)
@@ -33,11 +33,11 @@ Public Class _Default
     End Sub
 #End Region
 #Region "GridView Events"
-    Protected Sub lvDictionary_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvDictionary.SelectedIndexChanged
-        If (lvDictionary.SelectedIndex <> -1) Then
+    Protected Sub lvDictionary_SelectedIndexChanged(sender As Object, e As EventArgs) Handles gvDictionary.SelectedIndexChanged
+        If (gvDictionary.SelectedIndex <> -1) Then
             updateStatus(0)
-            Dim lbl As Label = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblCT")
-            ddlColumnType.SelectedIndex = populateDataDropDown(lbl.Text)
+            Dim ct As String = gvDictionary.SelectedRow.Cells(4).Text
+            ddlColumnType.SelectedIndex = populateDataDropDown(ct)
             EnableDisableForm("True")
             fillSelectedDetails()
         End If
@@ -46,13 +46,14 @@ Public Class _Default
 #Region "Button Events"
     Protected Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Dim comm As String = ""
-        If lvDictionary.SelectedIndex <> -1 Then
+        If gvDictionary.SelectedIndex <> -1 Then
             comm = "updateCommand"
         Else
             comm = "insertCommand"
         End If
         modifyEntry(comm)
         updateStatus(0)
+        Page.ClientScript.RegisterStartupScript(GetType(Page), "script", "success();", True)
     End Sub
 
     Protected Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
@@ -60,12 +61,12 @@ Public Class _Default
         clearForm()
         tbTableName.Text = ddlTable.SelectedValue
         ddlColumnType.SelectedIndex = -1
-        lvDictionary.SelectedIndex = -1
+        gvDictionary.SelectedIndex = -1
         EnableDisableForm("True")
     End Sub
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
-        If (lvDictionary.SelectedIndex = -1) Then
+        If (gvDictionary.SelectedIndex = -1) Then
             EnableDisableForm("False")
         End If
         clearForm()
@@ -74,24 +75,63 @@ Public Class _Default
 
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
         modifyEntry("deleteCommand")
-        lvDictionary.SelectedIndex = -1
+        gvDictionary.SelectedIndex = -1
         EnableDisableForm("False")
         clearForm()
         filterDataDictionaryByTable()
     End Sub
+
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
+        Dim newParm = New Parameter
+        newParm.Name = "search"
+        newParm.DefaultValue = tbSearch.Text
+
+        If (SqlDataSource1.SelectParameters.Count > 0) Then
+            Dim oldParm = SqlDataSource1.SelectParameters.Item(0)
+            SqlDataSource1.SelectParameters.Remove(oldParm)
+        End If
+        SqlDataSource1.SelectParameters.Add(newParm)
+
+        If (chkExactMatch.Checked) Then
+            SqlDataSource1.SelectCommand = ConfigurationManager.AppSettings("searchCommand")
+        Else
+            SqlDataSource1.SelectCommand = ConfigurationManager.AppSettings("searchWCommand")
+        End If
+        gvDictionary.DataBind()
+    End Sub
 #End Region
 #Region "Helper Subs/Functions"
+    Private Sub filterDataDictionaryByTable()
+        Dim parm = New ControlParameter
+        parm.Name = "Table"
+        parm.ControlID = "ddlTable"
+        parm.PropertyName = "SelectedValue"
+
+        If (SqlDataSource1.SelectParameters.Count > 0) Then
+            Dim oldParm = SqlDataSource1.SelectParameters.Item(0)
+            SqlDataSource1.SelectParameters.Remove(oldParm)
+        End If
+
+        SqlDataSource1.SelectParameters.Add(parm)
+
+        If (ddlTable.SelectedIndex <> 0) Then
+            SqlDataSource1.SelectCommand = ConfigurationManager.AppSettings("selectCommand")
+            gvDictionary.DataBind()
+            tbTableName.Text = ddlTable.SelectedValue
+        End If
+    End Sub
+
     Private Sub modifyEntry(ByVal comm As String)
         Dim mySqlConn As New OleDbConnection(ConfigurationManager.ConnectionStrings("AccessConnection").ConnectionString)
         Dim sqlComm As New OleDbCommand
-        Dim id As Label = New Label
+        Dim id As String = ""
 
-        If (lvDictionary.SelectedIndex <> -1) Then
-            id = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblID")
+        If (gvDictionary.SelectedIndex <> -1) Then
+            id = gvDictionary.SelectedRow.Cells(1).Text
         End If
 
         If (comm.Equals("deleteCommand")) Then
-            sqlComm.Parameters.AddWithValue("ID", id.Text)
+            sqlComm.Parameters.AddWithValue("ID", id)
         Else
 
             sqlComm.Parameters.AddWithValue("TABLE_NAME", tbTableName.Text)
@@ -108,8 +148,8 @@ Public Class _Default
             sqlComm.Parameters.AddWithValue("NULLABILITY", chkNullable.Checked)
             sqlComm.Parameters.AddWithValue("KEY", tbKey.Text)
             sqlComm.Parameters.AddWithValue("DESCRIPTION", tbDescription.Text)
-            If lvDictionary.SelectedIndex <> -1 Then
-                sqlComm.Parameters.AddWithValue("ID", id.Text)
+            If gvDictionary.SelectedIndex <> -1 Then
+                sqlComm.Parameters.AddWithValue("ID", id)
             End If
         End If
 
@@ -121,37 +161,42 @@ Public Class _Default
         populateTableDropDown(tbTableName.Text)
         filterDataDictionaryByTable()
 
-        If (lvDictionary.SelectedIndex = -1) Then
+        If (gvDictionary.SelectedIndex = -1) Then
             sqlComm.CommandText = "SELECT [ID] FROM [DATA_DICTIONARY] ORDER BY [ID] DESC"
             mySqlConn.Open()
             Dim reader As OleDbDataReader = sqlComm.ExecuteReader()
             If reader.Read() Then
-                id.Text = reader(0).ToString()
+                id = reader(0).ToString()
             End If
         End If
 
         mySqlConn.Close()
-        selectlv(lvDictionary, id.Text)
+        selectlv(gvDictionary, id)
     End Sub
 
-    Private Sub selectlv(ByRef lv As ListView, ByVal str As String)
+    Private Sub selectlv(ByRef gv As GridView, ByVal str As String)
         Dim x, i As Integer
-        Dim lblid As Label
-        Dim intRowFound As Integer
+        Dim lblID As String
+        Dim intRowFound, intPageFound As Integer
+        'EACH PAGE
+        For i = 0 To gv.PageCount
+            gv.PageIndex = i
+            gv.DataBind()
+            If gv.Rows.Count > 0 Then
+                'EACH ROW
+                For x = 0 To gv.Rows.Count - 1
+                    lblID = gv.Rows(x).Cells(1).Text
+                    'FOUND IT
+                    If lblID.Equals(str) Then
+                        intRowFound = x
+                        intPageFound = gv.PageIndex
+                    End If
+                Next
+            End If
+        Next
 
-        If lv.Items.Count > 0 Then
-            'EACH ROW
-            For x = 0 To lv.Items.Count - 1
-                lblid = lv.Items(x).FindControl("lblID")
-                'FOUND IT
-                If lblid.Text.Equals(str) Then
-                    intRowFound = x
-                End If
-            Next
-        End If
-
-        lv.SelectedIndex = intRowFound
-        lv.DataBind()
+        gv.SelectedIndex = intRowFound
+        gv.DataBind()
 
     End Sub
 
@@ -160,46 +205,46 @@ Public Class _Default
             lblStatus.Text = "Adding New Entry"
             lblCurrID.Text = ""
         Else
-            Dim id As Label = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblID")
-            Dim table As Label = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblTN")
-            Dim column As Label = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblCN")
-            lblStatus.Text = "Working on: " & table.Text & ", " & column.Text
-            lblCurrID.Text = "ID: " & id.Text
+            Dim id As String = gvDictionary.SelectedRow.Cells(1).Text
+            Dim table As String = gvDictionary.SelectedRow.Cells(2).Text
+            Dim column As String = gvDictionary.SelectedRow.Cells(3).Text
+            lblStatus.Text = "Working on: " & table & ", " & column
+            lblCurrID.Text = "ID: " & id
         End If
     End Sub
 
     Private Sub fillSelectedDetails()
         clearForm()
-        Dim lbl As Label
+        Dim lbl As String
         Dim chk As CheckBox
 
-        lbl = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblTN")
-        tbTableName.Text = lbl.Text
+        lbl = gvDictionary.SelectedRow.Cells(2).Text
+        tbTableName.Text = lbl
 
-        lbl = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblCN")
-        tbColumnName.Text = lbl.Text
+        lbl = gvDictionary.SelectedRow.Cells(3).Text
+        tbColumnName.Text = lbl
 
-        lbl = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblCT")
-        ddlColumnType.SelectedIndex = populateDataDropDown(lbl.Text)
+        lbl = gvDictionary.SelectedRow.Cells(4).Text
+        ddlColumnType.SelectedIndex = populateDataDropDown(lbl)
 
-        lbl = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblCS")
-        tbColumnSize.Text = lbl.Text
+        lbl = gvDictionary.SelectedRow.Cells(5).Text
+        tbColumnSize.Text = lbl
 
-        lbl = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblP")
-        tbPrecision.Text = lbl.Text
+        lbl = gvDictionary.SelectedRow.Cells(6).Text
+        tbPrecision.Text = lbl
 
-        lbl = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblS")
-        tbScale.Text = lbl.Text
+        lbl = gvDictionary.SelectedRow.Cells(7).Text
+        tbScale.Text = lbl
 
-        chk = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("chkN")
-        chkNullable.Checked = chk.Checked
+        lbl = gvDictionary.SelectedRow.Cells(8).Text
+        chkNullable.Checked = lbl
 
-        lbl = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblK")
-        tbKey.Text = lbl.Text
+        lbl = gvDictionary.SelectedRow.Cells(9).Text
+        tbKey.Text = lbl
 
-        lbl = lvDictionary.Items(lvDictionary.SelectedIndex).FindControl("lblD")
-        If Not (lbl.Text.Equals("&nbsp;")) Then
-            tbDescription.Text = lbl.Text
+        lbl = gvDictionary.SelectedRow.Cells(10).Text
+        If Not (lbl.Equals("&nbsp;")) Then
+            tbDescription.Text = lbl
         End If
     End Sub
 
@@ -245,13 +290,6 @@ Public Class _Default
             ddlTable.SelectedValue = sel
         End If
         mySqlConn.Close()
-    End Sub
-
-    Private Sub filterDataDictionaryByTable()
-        If (ddlTable.SelectedIndex <> 0) Then
-            lvDictionary.DataBind()
-            tbTableName.Text = ddlTable.SelectedValue
-        End If
     End Sub
 
     Private Sub clearForm()
@@ -320,7 +358,7 @@ Public Class _Default
         'Buttons
         btnSave.Enabled = value
         btnCancel.Enabled = value
-        If (lvDictionary.SelectedIndex <> -1) Then
+        If (gvDictionary.SelectedIndex <> -1) Then
             btnDelete.Enabled = True
         Else
             btnDelete.Enabled = False

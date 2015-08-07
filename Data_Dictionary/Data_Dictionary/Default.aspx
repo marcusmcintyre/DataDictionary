@@ -16,6 +16,43 @@
     </header>
     <form id="form1" runat="server">
         <div id="contain" runat="server">
+                        <asp:Label ID="Label16" runat="server" Text="Choose Table: "></asp:Label>
+            <asp:DropDownList ID="ddlTable" runat="server" AutoPostBack="True"></asp:DropDownList>
+            <asp:TextBox ID="tbSearch" runat="server"></asp:TextBox>
+            <asp:Button ID="btnSearch" runat="server" Text="Search" CausesValidation="false" />
+            <asp:Label ID="lblExactMatch" runat="server" Text="Exact Match: "></asp:Label>
+            <asp:CheckBox ID="chkExactMatch" runat="server" /><br />
+            <br />
+            <asp:GridView ID="gvDictionary" runat="server" AutoGenerateColumns="False" DataKeyNames="ID" DataSourceID="SqlDataSource1">
+                <Columns>
+                    <asp:CommandField ButtonType="Button" SelectText="    " ShowSelectButton="True" />
+                    <asp:BoundField DataField="ID" HeaderText="ID" />
+                    <asp:BoundField DataField="TABLE_NAME" HeaderText="Table Name" />
+                    <asp:BoundField DataField="COLUMN_NAME" HeaderText="Column Name" />
+                    <asp:BoundField DataField="COLUMN_TYPE" HeaderText="Column Type" />
+                    <asp:BoundField DataField="COLUMN_SIZE" HeaderText="Column Size">
+                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                    </asp:BoundField>
+                    <asp:BoundField DataField="PRECISION" HeaderText="Precision">
+                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                    </asp:BoundField>
+                    <asp:BoundField DataField="SCALE" HeaderText="Scale">
+                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                    </asp:BoundField>
+                    <asp:BoundField DataField="NULLABILITY" HeaderText="Nullability">
+                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                    </asp:BoundField>
+                    <asp:BoundField DataField="KEY" HeaderText="Key">
+                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                    </asp:BoundField>
+                    <asp:BoundField DataField="DESCRIPTION" HeaderText="Description" />
+                </Columns>
+
+                <RowStyle BackColor="White" />
+                <AlternatingRowStyle BackColor="#F5F5F5" />
+                <SelectedRowStyle BackColor="LightCyan" />
+            </asp:GridView>
+
             <table class="Details">
                 <tr>
                     <td>
@@ -115,109 +152,6 @@
             <asp:Label ID="lblCurrID" runat="server" Visible="false" />
             <br />
             <br />
-
-            <asp:Label ID="Label16" runat="server" Text="Choose Table: "></asp:Label>
-            <asp:DropDownList ID="ddlTable" runat="server" AutoPostBack="True"></asp:DropDownList><br />
-            <br />
-            <asp:ListView ID="lvDictionary" runat="server" DataSourceID="SqlDataSource1" DataKeyNames="ID">
-                <LayoutTemplate>
-                    <div runat="server" id="tblDictionary">
-                        <div runat="server" id="itemPlaceholder" />
-                    </div>
-                </LayoutTemplate>
-                <ItemTemplate>
-                    <table id="Entry" runat="server" class="Row">
-                        <tr id="trRow" runat="server">
-                            <td class="Select">
-                                <asp:Button ID="btnSelect" Text="Select" CausesValidation="false" CommandArgument='<%#DataBinder.Eval(Container.DataItem, "ID")%>' CommandName="Select" runat="server"></asp:Button>
-                            </td>
-                            <td class="TableName">
-                                <asp:Label ID="lblTN" runat="server" Text='<%# Bind("TABLE_NAME")%>'></asp:Label>,&nbsp;
-                            </td>
-                            <td class="ColumnName">
-                                <asp:Label ID="lblCN" runat="server" Text='<%# Bind("COLUMN_NAME")%>'></asp:Label>
-                            </td>
-                            <td class="Key">
-                                <asp:Label ID="lblK" runat="server" Text='<%# Bind("KEY")%>'></asp:Label>
-                            </td>
-                            <td class="Id">
-                                Entry: <asp:Label ID="lblID" runat="server" Text='<%# Bind("ID") %>'></asp:Label>
-                            </td>
-                        </tr>
-                        <tr id="tr3" runat="server">
-                            <td class="ColumnType">
-                                <asp:Label ID="lblCT" runat="server" Text='<%# Bind("COLUMN_TYPE")%>'></asp:Label>
-                            </td>
-                            <td class="Precision">
-                                <asp:Label ID="lblP" runat="server" Text='<%# Bind("PRECISION")%>'></asp:Label>
-                            </td>
-                            <td class="Scale">
-                                <asp:Label ID="lblS" runat="server" Text='<%# Bind("SCALE")%>'></asp:Label>
-                            </td>
-                            <td class="ColumnSize">
-                                <asp:Label ID="lblCS" runat="server" Text='<%# Bind("COLUMN_SIZE")%>'></asp:Label>
-                            </td>
-                        </tr>
-                        <tr id="tr2" runat="server">
-                            <td class="Nullable">
-                                <asp:CheckBox ID="chkN" runat="server" Enabled="false" Checked='<%# Bind("NULLABILITY")%>'></asp:CheckBox>
-                            </td>
-                        </tr>
-                        <tr id="tr1" runat="server">
-                            <td class="Description">
-                                Notes:&nbsp;<asp:Label ID="lblD" runat="server" Text='<%# Bind("DESCRIPTION") %>'></asp:Label>
-                            </td>
-                        </tr>
-                    </table>
-                </ItemTemplate>
-                <SelectedItemTemplate>
-                    <table id="Entry" runat="server" class="Row Row-Selected">
-                        <tr id="trRow" runat="server">
-                            <td class="Select">
-                                <asp:Button ID="btnSelect" Text="Select" CausesValidation="false" CommandArgument='<%#DataBinder.Eval(Container.DataItem, "ID")%>' CommandName="Select" runat="server"></asp:Button>
-                            </td>
-                            <td class="TableName">
-                                <asp:Label ID="lblTN" runat="server" Text='<%# Bind("TABLE_NAME")%>'></asp:Label>,&nbsp;
-                            </td>
-                            <td class="ColumnName">
-                                <asp:Label ID="lblCN" runat="server" Text='<%# Bind("COLUMN_NAME")%>'></asp:Label>
-                            </td>
-                            <td class="Key">
-                                <asp:Label ID="lblK" runat="server" Text='<%# Bind("KEY")%>'></asp:Label>
-                            </td>
-                            <td class="Id">
-                                Entry: <asp:Label ID="lblID" runat="server" Text='<%# Bind("ID") %>'></asp:Label>
-                            </td>
-                        </tr>
-                        <tr id="tr3" runat="server">
-                            <td class="ColumnType">
-                                <asp:Label ID="lblCT" runat="server" Text='<%# Bind("COLUMN_TYPE")%>'></asp:Label>
-                            </td>
-                            <td class="Precision">
-                                <asp:Label ID="lblP" runat="server" Text='<%# Bind("PRECISION")%>'></asp:Label>
-                            </td>
-                            <td class="Scale">
-                                <asp:Label ID="lblS" runat="server" Text='<%# Bind("SCALE")%>'></asp:Label>
-                            </td>
-                            <td class="ColumnSize">
-                                <asp:Label ID="lblCS" runat="server" Text='<%# Bind("COLUMN_SIZE")%>'></asp:Label>
-                            </td>
-                        </tr>
-                        <tr id="tr2" runat="server">
-                            <td class="Nullable">
-                                <asp:CheckBox ID="chkN" runat="server" Enabled="false" Checked='<%# Bind("NULLABILITY")%>'></asp:CheckBox>
-                            </td>
-                        </tr>
-                        <tr id="tr1" runat="server">
-                            <td class="Description">
-                                Notes:&nbsp;<asp:Label ID="lblD" runat="server" Text='<%# Bind("DESCRIPTION") %>'></asp:Label>
-                            </td>
-                        </tr>
-                    </table>
-                </SelectedItemTemplate>
-
-            </asp:ListView>
-
             <asp:SqlDataSource ID="SqlDataSource1" runat="server"
                 ConnectionString="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=DB\Database3.accdb"
                 ProviderName="<%$ ConnectionStrings:AccessConnection.ProviderName %>"
