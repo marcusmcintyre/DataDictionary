@@ -11,74 +11,25 @@ body {
 }
 
 header {
-    height: 10vh;
+    position:absolute;
+    top:0px;
+    height: 15vh;
+    overflow:hidden;
 }
 
-table {
-}
-
-.Details {
-    width: 70%;
-}
-
-.Row {
-    border: 1px solid gray;
-    margin-bottom: 7px;
+.wrapper {
     position:relative;
-    width: 100%;
-    background-color: white;
+    top:15vh;
+    height:60vh;
+    overflow:auto;
 }
 
-.Select {
-    float:left;
-
+.footer {
+    position:absolute;
+    bottom:0px;
+    height:20vh;
+    overflow:hidden;
 }
-
-.Id {
-    position: absolute;
-    right: 0px;
-}
-
-.Black {
-    background-color: black;
-}
-
-.TableName {
-    float: left;
-}
-
-.ColumnName {
-    float: left;
-}
-
-.ColumnType {
-    float:left;
-}
-
-.ColumnSize {
-    float:right;
-}
-
-.Precision {
-    float:left;
-}
-
-.Scale {
-    float:left;
-}
-
-.Nullable {
-
-}
-
-.Key {
-    float:left;
-}
-
-.Description {
-
-}
-
 
 .Row-Selected {
     background-color: lightcyan;

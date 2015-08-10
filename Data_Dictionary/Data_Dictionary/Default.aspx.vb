@@ -106,6 +106,7 @@ Public Class _Default
         parm.Name = "Table"
         parm.ControlID = "ddlTable"
         parm.PropertyName = "SelectedValue"
+        parm.DefaultValue = ddlTable.SelectedValue
 
         If (SqlDataSource1.SelectParameters.Count > 0) Then
             Dim oldParm = SqlDataSource1.SelectParameters.Item(0)

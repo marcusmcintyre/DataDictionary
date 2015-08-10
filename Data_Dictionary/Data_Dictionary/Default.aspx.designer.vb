@@ -14,15 +14,6 @@ Option Explicit On
 Partial Public Class _Default
 
     '''<summary>
-    '''body control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents body As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
-    '''<summary>
     '''form1 control.
     '''</summary>
     '''<remarks>
@@ -32,13 +23,13 @@ Partial Public Class _Default
     Protected WithEvents form1 As Global.System.Web.UI.HtmlControls.HtmlForm
 
     '''<summary>
-    '''contain control.
+    '''SqlDataSource1 control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents contain As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents SqlDataSource1 As Global.System.Web.UI.WebControls.SqlDataSource
 
     '''<summary>
     '''Label16 control.
@@ -131,6 +122,42 @@ Partial Public Class _Default
     Protected WithEvents rfvTableName As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
     '''<summary>
+    '''lblColumnType control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblColumnType As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''ddlColumnType control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents ddlColumnType As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''rfvColumnType control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents rfvColumnType As Global.System.Web.UI.WebControls.RequiredFieldValidator
+
+    '''<summary>
+    '''lblDescription control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDescription As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''lblColumnName control.
     '''</summary>
     '''<remarks>
@@ -158,31 +185,40 @@ Partial Public Class _Default
     Protected WithEvents rfvColumnName As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
     '''<summary>
-    '''lblColumnType control.
+    '''lblNullable control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblColumnType As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblNullable As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''ddlColumnType control.
+    '''chkNullable control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlColumnType As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents chkNullable As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
-    '''rfvColumnType control.
+    '''tbDescription control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents rfvColumnType As Global.System.Web.UI.WebControls.RequiredFieldValidator
+    Protected WithEvents tbDescription As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''rfvDescription control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents rfvDescription As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
     '''<summary>
     '''lblColumnSize control.
@@ -212,15 +248,6 @@ Partial Public Class _Default
     Protected WithEvents rfvColumnSize As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
     '''<summary>
-    '''rowPrecision control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents rowPrecision As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
     '''lblPrecision control.
     '''</summary>
     '''<remarks>
@@ -246,60 +273,6 @@ Partial Public Class _Default
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents rfvPrecision As Global.System.Web.UI.WebControls.RequiredFieldValidator
-
-    '''<summary>
-    '''rowScale control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents rowScale As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''lblScale control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblScale As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''tbScale control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents tbScale As Global.System.Web.UI.WebControls.TextBox
-
-    '''<summary>
-    '''rfvScale control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents rfvScale As Global.System.Web.UI.WebControls.RequiredFieldValidator
-
-    '''<summary>
-    '''lblNullable control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblNullable As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''chkNullable control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents chkNullable As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
     '''lblKey control.
@@ -329,31 +302,31 @@ Partial Public Class _Default
     Protected WithEvents rfvKey As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
     '''<summary>
-    '''lblDescription control.
+    '''lblScale control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDescription As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblScale As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''tbDescription control.
+    '''tbScale control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tbDescription As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents tbScale As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''rfvDescription control.
+    '''rfvScale control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents rfvDescription As Global.System.Web.UI.WebControls.RequiredFieldValidator
+    Protected WithEvents rfvScale As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
     '''<summary>
     '''btnSave control.
@@ -408,13 +381,4 @@ Partial Public Class _Default
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblCurrID As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''SqlDataSource1 control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents SqlDataSource1 As Global.System.Web.UI.WebControls.SqlDataSource
 End Class

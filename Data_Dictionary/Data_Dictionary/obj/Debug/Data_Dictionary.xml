@@ -31,14 +31,6 @@ Data_Dictionary
  Module used to define the properties that are available in the My Namespace for Web projects.
  </summary>
 	<remarks></remarks>
-</member><member name="F:Data_Dictionary._Default.body">
-	<summary>
-body control.
-</summary>
-	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
 </member><member name="F:Data_Dictionary._Default.form1">
 	<summary>
 form1 control.
@@ -47,9 +39,9 @@ form1 control.
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
-</member><member name="F:Data_Dictionary._Default.contain">
+</member><member name="F:Data_Dictionary._Default.SqlDataSource1">
 	<summary>
-contain control.
+SqlDataSource1 control.
 </summary>
 	<remarks>
 Auto-generated field.
@@ -135,6 +127,38 @@ rfvTableName control.
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
+</member><member name="F:Data_Dictionary._Default.lblColumnType">
+	<summary>
+lblColumnType control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.ddlColumnType">
+	<summary>
+ddlColumnType control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.rfvColumnType">
+	<summary>
+rfvColumnType control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.lblDescription">
+	<summary>
+lblDescription control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
 </member><member name="F:Data_Dictionary._Default.lblColumnName">
 	<summary>
 lblColumnName control.
@@ -159,25 +183,33 @@ rfvColumnName control.
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
-</member><member name="F:Data_Dictionary._Default.lblColumnType">
+</member><member name="F:Data_Dictionary._Default.lblNullable">
 	<summary>
-lblColumnType control.
+lblNullable control.
 </summary>
 	<remarks>
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
-</member><member name="F:Data_Dictionary._Default.ddlColumnType">
+</member><member name="F:Data_Dictionary._Default.chkNullable">
 	<summary>
-ddlColumnType control.
+chkNullable control.
 </summary>
 	<remarks>
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
-</member><member name="F:Data_Dictionary._Default.rfvColumnType">
+</member><member name="F:Data_Dictionary._Default.tbDescription">
 	<summary>
-rfvColumnType control.
+tbDescription control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.rfvDescription">
+	<summary>
+rfvDescription control.
 </summary>
 	<remarks>
 Auto-generated field.
@@ -207,14 +239,6 @@ rfvColumnSize control.
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
-</member><member name="F:Data_Dictionary._Default.rowPrecision">
-	<summary>
-rowPrecision control.
-</summary>
-	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
 </member><member name="F:Data_Dictionary._Default.lblPrecision">
 	<summary>
 lblPrecision control.
@@ -234,54 +258,6 @@ To modify move field declaration from designer file to code-behind file.
 </member><member name="F:Data_Dictionary._Default.rfvPrecision">
 	<summary>
 rfvPrecision control.
-</summary>
-	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
-</member><member name="F:Data_Dictionary._Default.rowScale">
-	<summary>
-rowScale control.
-</summary>
-	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
-</member><member name="F:Data_Dictionary._Default.lblScale">
-	<summary>
-lblScale control.
-</summary>
-	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
-</member><member name="F:Data_Dictionary._Default.tbScale">
-	<summary>
-tbScale control.
-</summary>
-	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
-</member><member name="F:Data_Dictionary._Default.rfvScale">
-	<summary>
-rfvScale control.
-</summary>
-	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
-</member><member name="F:Data_Dictionary._Default.lblNullable">
-	<summary>
-lblNullable control.
-</summary>
-	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
-</member><member name="F:Data_Dictionary._Default.chkNullable">
-	<summary>
-chkNullable control.
 </summary>
 	<remarks>
 Auto-generated field.
@@ -311,25 +287,25 @@ rfvKey control.
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
-</member><member name="F:Data_Dictionary._Default.lblDescription">
+</member><member name="F:Data_Dictionary._Default.lblScale">
 	<summary>
-lblDescription control.
+lblScale control.
 </summary>
 	<remarks>
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
-</member><member name="F:Data_Dictionary._Default.tbDescription">
+</member><member name="F:Data_Dictionary._Default.tbScale">
 	<summary>
-tbDescription control.
+tbScale control.
 </summary>
 	<remarks>
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
-</member><member name="F:Data_Dictionary._Default.rfvDescription">
+</member><member name="F:Data_Dictionary._Default.rfvScale">
 	<summary>
-rfvDescription control.
+rfvScale control.
 </summary>
 	<remarks>
 Auto-generated field.
@@ -378,14 +354,6 @@ To modify move field declaration from designer file to code-behind file.
 </member><member name="F:Data_Dictionary._Default.lblCurrID">
 	<summary>
 lblCurrID control.
-</summary>
-	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
-</member><member name="F:Data_Dictionary._Default.SqlDataSource1">
-	<summary>
-SqlDataSource1 control.
 </summary>
 	<remarks>
 Auto-generated field.
