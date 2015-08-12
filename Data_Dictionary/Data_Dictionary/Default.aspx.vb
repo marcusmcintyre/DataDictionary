@@ -12,7 +12,7 @@ Public Class _Default
             ViewState("ps") = 0
             EnableDisableForm("False")
             populateTableDropDown("")
-            filterDataDictionaryByTable()
+            'filterDataDictionaryByTable()
             populateDataDropDown("")
         End If
     End Sub
@@ -24,7 +24,7 @@ Public Class _Default
         End If
         clearForm()
         updateStatus(1)
-        filterDataDictionaryByTable()
+        'filterDataDictionaryByTable()
     End Sub
 
 
@@ -82,21 +82,52 @@ Public Class _Default
     End Sub
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
-        Dim newParm = New Parameter
-        newParm.Name = "search"
-        newParm.DefaultValue = tbSearch.Text
+        Dim sel As String = "SELECT * FROM [DATA_DICTIONARY]"
+        Dim clause As String = ""
+        Dim whereClause As String = " WHERE "
+        Dim col As String = ""
+        Dim tbl As String = ""
+        Dim parm As String = ""
 
-        If (SqlDataSource1.SelectParameters.Count > 0) Then
+        For i = 0 To (SqlDataSource1.SelectParameters.Count - 1)
             Dim oldParm = SqlDataSource1.SelectParameters.Item(0)
             SqlDataSource1.SelectParameters.Remove(oldParm)
-        End If
-        SqlDataSource1.SelectParameters.Add(newParm)
+        Next
 
-        If (chkExactMatch.Checked) Then
-            SqlDataSource1.SelectCommand = ConfigurationManager.AppSettings("searchCommand")
+        If chkExactMatch.Checked Then
+            parm = "@search"
         Else
-            SqlDataSource1.SelectCommand = ConfigurationManager.AppSettings("searchWCommand")
+            parm = "'%' + @search + '%'"
         End If
+
+        If ddlTable.SelectedIndex <> 0 Then
+            Dim table = New Parameter
+            table.Name = "table"
+            table.DefaultValue = ddlTable.SelectedValue
+            SqlDataSource1.SelectParameters.Add(table)
+            tbl = "[TABLE_NAME] LIKE @table"
+            clause += tbl
+        End If
+
+        If Not tbSearch.Text.Equals("") Then
+            Dim column = New Parameter
+            column.Name = "search"
+            column.DefaultValue = tbSearch.Text
+            SqlDataSource1.SelectParameters.Add(column)
+            col = "[COLUMN_NAME] LIKE " + parm
+            If (clause.Length > 0) Then
+                clause += " AND "
+            End If
+            clause += col
+        End If
+
+        If (clause.Length > 0) Then
+            whereClause += clause
+        Else
+            whereClause += "ID = -1"
+        End If
+
+        SqlDataSource1.SelectCommand = sel + whereClause + ";"
         gvDictionary.DataBind()
     End Sub
 #End Region

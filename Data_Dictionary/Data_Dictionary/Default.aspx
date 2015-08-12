@@ -13,13 +13,7 @@
     <form id="form1" runat="server">
         <asp:SqlDataSource ID="SqlDataSource1" runat="server"
             ConnectionString="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=DB\Database1.accdb"
-            ProviderName="<%$ ConnectionStrings:AccessConnection.ProviderName %>"
-            SelectCommand="SELECT * FROM [DATA_DICTIONARY] WHERE TABLE_NAME = @Table ORDER BY [COLUMN_NAME]">
-            <SelectParameters>
-                <asp:ControlParameter Name="Table"
-                    ControlID="ddlTable"
-                    PropertyName="SelectedValue" />
-            </SelectParameters>
+            ProviderName="<%$ ConnectionStrings:AccessConnection.ProviderName %>">
         </asp:SqlDataSource>
 
         <header>
