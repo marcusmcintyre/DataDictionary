@@ -23,13 +23,22 @@ Partial Public Class _Default
     Protected WithEvents form1 As Global.System.Web.UI.HtmlControls.HtmlForm
 
     '''<summary>
-    '''SqlDataSource1 control.
+    '''SQLServer control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents SqlDataSource1 As Global.System.Web.UI.WebControls.SqlDataSource
+    Protected WithEvents SQLServer As Global.System.Web.UI.WebControls.SqlDataSource
+
+    '''<summary>
+    '''pnlSearch control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents pnlSearch As Global.System.Web.UI.WebControls.Panel
 
     '''<summary>
     '''Label16 control.
@@ -39,6 +48,15 @@ Partial Public Class _Default
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label16 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Label1 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
     '''ddlTable control.
@@ -59,15 +77,6 @@ Partial Public Class _Default
     Protected WithEvents tbSearch As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''btnSearch control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
-
-    '''<summary>
     '''lblExactMatch control.
     '''</summary>
     '''<remarks>
@@ -86,6 +95,24 @@ Partial Public Class _Default
     Protected WithEvents chkExactMatch As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
+    '''btnClear control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnClear As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''btnSearch control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
     '''gvDictionary control.
     '''</summary>
     '''<remarks>
@@ -93,6 +120,24 @@ Partial Public Class _Default
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents gvDictionary As Global.System.Web.UI.WebControls.GridView
+
+    '''<summary>
+    '''lblStatus control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblStatus As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblCurrID control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblCurrID As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
     '''lblTableName control.
@@ -329,15 +374,6 @@ Partial Public Class _Default
     Protected WithEvents rfvScale As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
     '''<summary>
-    '''btnSave control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents btnSave As Global.System.Web.UI.WebControls.Button
-
-    '''<summary>
     '''btnCancel control.
     '''</summary>
     '''<remarks>
@@ -345,15 +381,6 @@ Partial Public Class _Default
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnCancel As Global.System.Web.UI.WebControls.Button
-
-    '''<summary>
-    '''btnAdd control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents btnAdd As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
     '''btnDelete control.
@@ -365,20 +392,20 @@ Partial Public Class _Default
     Protected WithEvents btnDelete As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
-    '''lblStatus control.
+    '''btnAdd control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblStatus As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents btnAdd As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
-    '''lblCurrID control.
+    '''btnSave control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCurrID As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents btnSave As Global.System.Web.UI.WebControls.Button
 End Class

@@ -22,3 +22,4 @@ C:\Users\Marcus\Documents\Visual Studio 2012\Projects\DataDictionary\Data_Dictio
 C:\Users\Marcus\Documents\Visual Studio 2012\Projects\DataDictionary\Data_Dictionary\Data_Dictionary\obj\Debug\Data_Dictionary.dll
 C:\Users\Marcus\Documents\Visual Studio 2012\Projects\DataDictionary\Data_Dictionary\Data_Dictionary\obj\Debug\Data_Dictionary.xml
 C:\Users\Marcus\Documents\Visual Studio 2012\Projects\DataDictionary\Data_Dictionary\Data_Dictionary\obj\Debug\Data_Dictionary.pdb
+C:\Users\Marcus\Documents\Visual Studio 2012\Projects\DataDictionary\Data_Dictionary\Data_Dictionary\obj\Debug\Data_Dictionary.vbprojResolveAssemblyReference.cache

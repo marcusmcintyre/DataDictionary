@@ -11,26 +11,42 @@
 
 <body>
     <form id="form1" runat="server">
-        <asp:SqlDataSource ID="SqlDataSource1" runat="server"
-            ConnectionString="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=DB\Database1.accdb"
-            ProviderName="<%$ ConnectionStrings:AccessConnection.ProviderName %>">
-        </asp:SqlDataSource>
+
+        <asp:SqlDataSource ID="SQLServer" runat="server" ConnectionString="<%$ ConnectionStrings:SQLConnection %>"></asp:SqlDataSource>
 
         <header>
             <a href="Default.aspx">
                 <h1>Data Dictionary</h1>
             </a>
-            <asp:Label ID="Label16" runat="server" Text="Choose Table: "></asp:Label>
-            <asp:DropDownList ID="ddlTable" runat="server" AutoPostBack="True"></asp:DropDownList>
-            <asp:TextBox ID="tbSearch" runat="server"></asp:TextBox>
-            <asp:Button ID="btnSearch" runat="server" Text="Search" CausesValidation="false" />
-            <asp:Label ID="lblExactMatch" runat="server" Text="Exact Match: "></asp:Label>
-            <asp:CheckBox ID="chkExactMatch" runat="server" />
+            <asp:Panel ID="pnlSearch" runat="server" DefaultButton="btnSearch">
+                <table>
+                    <tr>
+                        <td>
+                            <asp:Label ID="Label16" runat="server" Text="Choose Table: "></asp:Label>
+                        </td>
+                        <td>
+                            <asp:Label ID="Label1" runat="server" Text="Choose Column: "></asp:Label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:DropDownList ID="ddlTable" runat="server" AutoPostBack="True"></asp:DropDownList>
+                        </td>
+                        <td>
+                            <asp:TextBox ID="tbSearch" runat="server"></asp:TextBox>
+                            <asp:Label ID="lblExactMatch" runat="server" Text="Exact Match: "></asp:Label>
+                            <asp:CheckBox ID="chkExactMatch" runat="server" />
+                            <asp:Button ID="btnClear" runat="server" Text="Clear" CausesValidation="false" />
+                            <asp:Button ID="btnSearch" runat="server" Text="Search" CausesValidation="false" />
+                        </td>
+                    </tr>
+                </table>
+            </asp:Panel>
         </header>
 
         <div class="wrapper" runat="server">
             <article>
-                <asp:GridView ID="gvDictionary" runat="server" AutoGenerateColumns="False" DataKeyNames="ID" DataSourceID="SqlDataSource1">
+                <asp:GridView ID="gvDictionary" runat="server" AutoGenerateColumns="False" DataKeyNames="ID" DataSourceID="SQLServer">
                     <Columns>
                         <asp:CommandField ButtonType="Button" SelectText="    " ShowSelectButton="True" />
                         <asp:BoundField DataField="ID" HeaderText="ID" />
@@ -65,6 +81,11 @@
 
         <div class="footer">
             <table class="Details">
+                <tr>
+                    <asp:Label ID="lblStatus" runat="server" Visible="false" />
+                    <br />
+                    <asp:Label ID="lblCurrID" runat="server" Visible="false" />
+                </tr>
                 <tr>
                     <td>
                         <asp:Label ID="lblTableName" runat="server" Text="Table Name: "></asp:Label>
@@ -136,18 +157,18 @@
                     </td>
                 </tr>
                 <tr>
+                    <td><asp:Button ID="btnCancel" runat="server" Text="Cancel" CausesValidation="false" /></td>
                     <td></td>
+                    <td><asp:Button ID="btnDelete" runat="server" OnClientClick="return confirmation();" Text="Delete" CausesValidation="false" /></td>
+                    <td><asp:Button ID="btnAdd" runat="server" Text="Add New Entry" CausesValidation="false" /></td>
                     <td>
                         <asp:Button ID="btnSave" runat="server" Text="Save" />
                     </td>
                 </tr>
             </table>
-            <asp:Button ID="btnCancel" runat="server" Text="Cancel" CausesValidation="false" />
-            <asp:Button ID="btnAdd" runat="server" Text="Add New Entry" CausesValidation="false" />
-            <asp:Button ID="btnDelete" runat="server" OnClientClick="return confirmation();" Text="Delete" CausesValidation="false" />
-            <asp:Label ID="lblStatus" runat="server" Visible="false" />
-            <br />
-            <asp:Label ID="lblCurrID" runat="server" Visible="false" />
+            
+           
+            
         </div>
 
     </form>

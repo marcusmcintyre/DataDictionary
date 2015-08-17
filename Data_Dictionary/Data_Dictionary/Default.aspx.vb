@@ -81,6 +81,11 @@ Public Class _Default
         filterDataDictionaryByTable()
     End Sub
 
+    Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
+        ddlTable.SelectedIndex = -1
+        tbSearch.Text = ""
+    End Sub
+
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Dim sel As String = "SELECT * FROM [DATA_DICTIONARY]"
         Dim clause As String = ""
@@ -89,9 +94,9 @@ Public Class _Default
         Dim tbl As String = ""
         Dim parm As String = ""
 
-        For i = 0 To (SqlDataSource1.SelectParameters.Count - 1)
-            Dim oldParm = SqlDataSource1.SelectParameters.Item(0)
-            SqlDataSource1.SelectParameters.Remove(oldParm)
+        For i = 0 To (SQLServer.SelectParameters.Count - 1)
+            Dim oldParm = SQLServer.SelectParameters.Item(0)
+            SQLServer.SelectParameters.Remove(oldParm)
         Next
 
         If chkExactMatch.Checked Then
@@ -104,7 +109,7 @@ Public Class _Default
             Dim table = New Parameter
             table.Name = "table"
             table.DefaultValue = ddlTable.SelectedValue
-            SqlDataSource1.SelectParameters.Add(table)
+            SQLServer.SelectParameters.Add(table)
             tbl = "[TABLE_NAME] LIKE @table"
             clause += tbl
         End If
@@ -113,7 +118,7 @@ Public Class _Default
             Dim column = New Parameter
             column.Name = "search"
             column.DefaultValue = tbSearch.Text
-            SqlDataSource1.SelectParameters.Add(column)
+            SQLServer.SelectParameters.Add(column)
             col = "[COLUMN_NAME] LIKE " + parm
             If (clause.Length > 0) Then
                 clause += " AND "
@@ -127,7 +132,7 @@ Public Class _Default
             whereClause += "ID = -1"
         End If
 
-        SqlDataSource1.SelectCommand = sel + whereClause + ";"
+        SQLServer.SelectCommand = sel + whereClause + ";"
         gvDictionary.DataBind()
     End Sub
 #End Region
@@ -139,15 +144,15 @@ Public Class _Default
         parm.PropertyName = "SelectedValue"
         parm.DefaultValue = ddlTable.SelectedValue
 
-        If (SqlDataSource1.SelectParameters.Count > 0) Then
-            Dim oldParm = SqlDataSource1.SelectParameters.Item(0)
-            SqlDataSource1.SelectParameters.Remove(oldParm)
+        If (SQLServer.SelectParameters.Count > 0) Then
+            Dim oldParm = SQLServer.SelectParameters.Item(0)
+            SQLServer.SelectParameters.Remove(oldParm)
         End If
 
-        SqlDataSource1.SelectParameters.Add(parm)
+        SQLServer.SelectParameters.Add(parm)
 
         If (ddlTable.SelectedIndex <> 0) Then
-            SqlDataSource1.SelectCommand = ConfigurationManager.AppSettings("selectCommand")
+            SQLServer.SelectCommand = ConfigurationManager.AppSettings("selectCommand")
             gvDictionary.DataBind()
             tbTableName.Text = ddlTable.SelectedValue
         End If

@@ -39,9 +39,17 @@ form1 control.
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
-</member><member name="F:Data_Dictionary._Default.SqlDataSource1">
+</member><member name="F:Data_Dictionary._Default.SQLServer">
 	<summary>
-SqlDataSource1 control.
+SQLServer control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.pnlSearch">
+	<summary>
+pnlSearch control.
 </summary>
 	<remarks>
 Auto-generated field.
@@ -50,6 +58,14 @@ To modify move field declaration from designer file to code-behind file.
 </member><member name="F:Data_Dictionary._Default.Label16">
 	<summary>
 Label16 control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.Label1">
+	<summary>
+Label1 control.
 </summary>
 	<remarks>
 Auto-generated field.
@@ -71,14 +87,6 @@ tbSearch control.
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
-</member><member name="F:Data_Dictionary._Default.btnSearch">
-	<summary>
-btnSearch control.
-</summary>
-	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
 </member><member name="F:Data_Dictionary._Default.lblExactMatch">
 	<summary>
 lblExactMatch control.
@@ -95,9 +103,41 @@ chkExactMatch control.
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
+</member><member name="F:Data_Dictionary._Default.btnClear">
+	<summary>
+btnClear control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.btnSearch">
+	<summary>
+btnSearch control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
 </member><member name="F:Data_Dictionary._Default.gvDictionary">
 	<summary>
 gvDictionary control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.lblStatus">
+	<summary>
+lblStatus control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.lblCurrID">
+	<summary>
+lblCurrID control.
 </summary>
 	<remarks>
 Auto-generated field.
@@ -311,25 +351,9 @@ rfvScale control.
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
-</member><member name="F:Data_Dictionary._Default.btnSave">
-	<summary>
-btnSave control.
-</summary>
-	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
 </member><member name="F:Data_Dictionary._Default.btnCancel">
 	<summary>
 btnCancel control.
-</summary>
-	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
-</member><member name="F:Data_Dictionary._Default.btnAdd">
-	<summary>
-btnAdd control.
 </summary>
 	<remarks>
 Auto-generated field.
@@ -343,17 +367,17 @@ btnDelete control.
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
-</member><member name="F:Data_Dictionary._Default.lblStatus">
+</member><member name="F:Data_Dictionary._Default.btnAdd">
 	<summary>
-lblStatus control.
+btnAdd control.
 </summary>
 	<remarks>
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
-</member><member name="F:Data_Dictionary._Default.lblCurrID">
+</member><member name="F:Data_Dictionary._Default.btnSave">
 	<summary>
-lblCurrID control.
+btnSave control.
 </summary>
 	<remarks>
 Auto-generated field.
