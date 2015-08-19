@@ -159,56 +159,66 @@ Public Class _Default
     End Sub
 
     Private Sub modifyEntry(ByVal comm As String)
-        Dim mySqlConn As New OleDbConnection(ConfigurationManager.ConnectionStrings("AccessConnection").ConnectionString)
-        Dim sqlComm As New OleDbCommand
+        Dim params As New ParameterCollection
         Dim id As String = ""
 
         If (gvDictionary.SelectedIndex <> -1) Then
             id = gvDictionary.SelectedRow.Cells(1).Text
         End If
 
+        ' DELETE COMMAND
         If (comm.Equals("deleteCommand")) Then
-            sqlComm.Parameters.AddWithValue("ID", id)
+            SQLServer.DeleteParameters.Add("ID", id)
+            SQLServer.DeleteCommand = ConfigurationManager.AppSettings(comm)
+            SQLServer.Delete()
         Else
-
-            sqlComm.Parameters.AddWithValue("TABLE_NAME", tbTableName.Text)
-            sqlComm.Parameters.AddWithValue("COLUMN_NAME", tbColumnName.Text)
-            sqlComm.Parameters.AddWithValue("COLUMN_TYPE", ddlColumnType.SelectedValue)
-            sqlComm.Parameters.AddWithValue("COLUMN_SIZE", tbColumnSize.Text)
+            params.Add("TABLE_NAME", tbTableName.Text)
+            params.Add("COLUMN_NAME", tbColumnName.Text)
+            params.Add("COLUMN_TYPE", ddlColumnType.SelectedValue)
+            params.Add("COLUMN_SIZE", tbColumnSize.Text)
             If (checkDataDropDown()) Then
-                sqlComm.Parameters.AddWithValue("PRECISION", tbPrecision.Text)
-                sqlComm.Parameters.AddWithValue("SCALE", tbScale.Text)
+                params.Add("PRECISION", tbPrecision.Text)
+                params.Add("SCALE", tbScale.Text)
             Else
-                sqlComm.Parameters.AddWithValue("PRECISION", 0)
-                sqlComm.Parameters.AddWithValue("SCALE", 0)
+                params.Add("PRECISION", 0)
+                params.Add("SCALE", 0)
             End If
-            sqlComm.Parameters.AddWithValue("NULLABILITY", chkNullable.Checked)
-            sqlComm.Parameters.AddWithValue("KEY", tbKey.Text)
-            sqlComm.Parameters.AddWithValue("DESCRIPTION", tbDescription.Text)
-            If gvDictionary.SelectedIndex <> -1 Then
-                sqlComm.Parameters.AddWithValue("ID", id)
-            End If
-        End If
+            params.Add("NULLABILITY", chkNullable.Checked)
+            params.Add("KEY", tbKey.Text)
+            params.Add("DESCRIPTION", tbDescription.Text)
 
-        mySqlConn.Open()
-        sqlComm.Connection = mySqlConn
-        sqlComm.CommandText = ConfigurationManager.AppSettings(comm)
-        sqlComm.ExecuteNonQuery()
-        mySqlConn.Close()
-        populateTableDropDown(tbTableName.Text)
-        filterDataDictionaryByTable()
+            ' UPDATE COMMAND
+            If gvDictionary.SelectedIndex <> -1 Then
+                For i = 0 To params.Count - 1
+                    SQLServer.UpdateParameters.Add(params.Item(i))
+                Next
+                SQLServer.UpdateParameters.Add("ID", id)
+                SQLServer.UpdateCommand = ConfigurationManager.AppSettings(comm)
+                SQLServer.Update()
+            Else
+                For i = 0 To params.Count - 1
+                    SQLServer.InsertParameters.Add(params.Item(i))
+                Next
+                SQLServer.InsertCommand = ConfigurationManager.AppSettings(comm)
+                SQLServer.Insert()
+            End If
+
+            End If
+
+            populateTableDropDown(tbTableName.Text)
+            filterDataDictionaryByTable()
 
         If (gvDictionary.SelectedIndex = -1) Then
-            sqlComm.CommandText = "SELECT [ID] FROM [DATA_DICTIONARY] ORDER BY [ID] DESC"
-            mySqlConn.Open()
-            Dim reader As OleDbDataReader = sqlComm.ExecuteReader()
-            If reader.Read() Then
+            Dim oldCmd As String = SQLServer.SelectCommand
+            SQLServer.SelectCommand = "SELECT [ID] FROM [DATA_DICTIONARY] ORDER BY [ID] DESC"
+            Dim reader As DataView = SQLServer.Select(DataSourceSelectArguments.Empty)
+            If reader.Count > 0 Then
                 id = reader(0).ToString()
             End If
+            SQLServer.SelectCommand = oldCmd
         End If
 
-        mySqlConn.Close()
-        selectlv(gvDictionary, id)
+            selectlv(gvDictionary, id)
     End Sub
 
     Private Sub selectlv(ByRef gv As GridView, ByVal str As String)
@@ -301,23 +311,20 @@ Public Class _Default
     End Function
 
     Private Sub populateTableDropDown(ByVal str As String)
-        Dim mySqlConn As New OleDbConnection(ConfigurationManager.ConnectionStrings("AccessConnection").ConnectionString)
-        Dim sqlComm As New OleDbCommand
         Dim arrTable As New ArrayList
         Dim sel As String = ""
+        Dim oldCmd As String = SQLServer.SelectCommand
 
         arrTable.Add("")
-        mySqlConn.Open()
-        sqlComm.CommandText = "SELECT DISTINCT [TABLE_NAME] FROM [DATA_DICTIONARY] ORDER BY [TABLE_NAME]"
-        sqlComm.Connection = mySqlConn
+        SQLServer.SelectCommand = "SELECT DISTINCT [TABLE_NAME] FROM [DATA_DICTIONARY] ORDER BY [TABLE_NAME]"
 
-        Dim reader As OleDbDataReader = sqlComm.ExecuteReader()
-        While reader.Read()
-            If (reader(0).ToString.Equals(str)) Then
+        Dim read As DataView = SQLServer.Select(DataSourceSelectArguments.Empty)
+        For i = 0 To read.Count - 1
+            If (read(i).Item(0).ToString.Equals(str)) Then
                 sel = str
             End If
-            arrTable.Add(reader(0).ToString)
-        End While
+            arrTable.Add(read(i).Item(0).ToString)
+        Next
 
         ddlTable.DataSource = arrTable
         ddlTable.DataBind()
@@ -326,7 +333,7 @@ Public Class _Default
         Else
             ddlTable.SelectedValue = sel
         End If
-        mySqlConn.Close()
+        SQLServer.SelectCommand = oldCmd
     End Sub
 
     Private Sub clearForm()
