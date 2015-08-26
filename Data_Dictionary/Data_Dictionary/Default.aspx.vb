@@ -90,6 +90,7 @@ Public Class _Default
         Dim sel As String = "SELECT * FROM [DATA_DICTIONARY]"
         Dim clause As String = ""
         Dim whereClause As String = " WHERE "
+        Dim orderBy As String = "  ORDER BY [KEY] DESC, [COLUMN_NAME] ASC, [COLUMN_TYPE]"
         Dim col As String = ""
         Dim tbl As String = ""
         Dim parm As String = ""
@@ -132,7 +133,7 @@ Public Class _Default
             whereClause += "ID = -1"
         End If
 
-        SQLServer.SelectCommand = sel + whereClause + ";"
+        SQLServer.SelectCommand = sel + whereClause + orderBy + ";"
         gvDictionary.DataBind()
     End Sub
 #End Region
@@ -210,7 +211,7 @@ Public Class _Default
 
         If (gvDictionary.SelectedIndex = -1) Then
             Dim oldCmd As String = SQLServer.SelectCommand
-            SQLServer.SelectCommand = "SELECT [ID] FROM [DATA_DICTIONARY] ORDER BY [ID] DESC"
+            SQLServer.SelectCommand = "SELECT [ID] FROM [DATA_DICTIONARY]  ORDER BY [KEY] DESC, [COLUMN_NAME] ASC, [COLUMN_TYPE]"
             Dim reader As DataView = SQLServer.Select(DataSourceSelectArguments.Empty)
             If reader.Count > 0 Then
                 id = reader(0).ToString()
