@@ -81,6 +81,7 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Database1.accdb" />
     <Content Include="Default.aspx" />
     <Content Include="home.js" />
     <Content Include="Style.css" />

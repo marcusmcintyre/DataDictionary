@@ -32,6 +32,15 @@ Partial Public Class _Default
     Protected WithEvents SQLServer As Global.System.Web.UI.WebControls.SqlDataSource
 
     '''<summary>
+    '''AccessDataSource1 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents AccessDataSource1 As Global.System.Web.UI.WebControls.AccessDataSource
+
+    '''<summary>
     '''pnlSearch control.
     '''</summary>
     '''<remarks>
@@ -111,6 +120,42 @@ Partial Public Class _Default
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''lblSQL control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblSQL As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''rbSQL control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents rbSQL As Global.System.Web.UI.WebControls.RadioButton
+
+    '''<summary>
+    '''lblAccess control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblAccess As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''rbAccess control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents rbAccess As Global.System.Web.UI.WebControls.RadioButton
 
     '''<summary>
     '''gvDictionary control.
@@ -408,4 +453,13 @@ Partial Public Class _Default
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnSave As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''btnApplyDescription control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnApplyDescription As Global.System.Web.UI.WebControls.Button
 End Class

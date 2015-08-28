@@ -1,19 +1,21 @@
 ﻿Imports System.Data.OleDb
-Imports System.Data.Sql
 Imports System
 Imports System.Drawing.Color
 
 Public Class _Default
     Inherits System.Web.UI.Page
 
+
 #Region "Page Events"
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not (IsPostBack()) Then
+            setDataSource()
             ViewState("ps") = 0
             EnableDisableForm("False")
             populateTableDropDown("")
-            'filterDataDictionaryByTable()
             populateDataDropDown("")
+        Else
+            setDataSource()
         End If
     End Sub
 #End Region
@@ -53,7 +55,7 @@ Public Class _Default
         End If
         modifyEntry(comm)
         updateStatus(0)
-        Page.ClientScript.RegisterStartupScript(GetType(Page), "script", "success();", True)
+        Page.ClientScript.RegisterStartupScript(GetType(Page), "script", "display('You successfully saved this entry.');", True)
     End Sub
 
     Protected Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
@@ -86,6 +88,16 @@ Public Class _Default
         tbSearch.Text = ""
     End Sub
 
+    Private Sub btnApplyDescription_Click(sender As Object, e As EventArgs) Handles btnApplyDescription.Click
+        If (tbDescription.Text.Length > 0) Then
+            modifyEntry("applyCommand")
+            updateStatus(0)
+            Page.ClientScript.RegisterStartupScript(GetType(Page), "script", "display('You successfully saved this entry.');", True)
+        Else
+            Page.ClientScript.RegisterStartupScript(GetType(Page), "script", "display('You need to fill out a Description.');", True)
+        End If
+    End Sub
+
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Dim sel As String = "SELECT * FROM [DATA_DICTIONARY]"
         Dim clause As String = ""
@@ -95,9 +107,9 @@ Public Class _Default
         Dim tbl As String = ""
         Dim parm As String = ""
 
-        For i = 0 To (SQLServer.SelectParameters.Count - 1)
-            Dim oldParm = SQLServer.SelectParameters.Item(0)
-            SQLServer.SelectParameters.Remove(oldParm)
+        For i = 0 To (gvDictionary.DataSource.SelectParameters.Count - 1)
+            Dim oldParm = gvDictionary.DataSource.SelectParameters.Item(0)
+            gvDictionary.DataSource.SelectParameters.Remove(oldParm)
         Next
 
         If chkExactMatch.Checked Then
@@ -110,7 +122,7 @@ Public Class _Default
             Dim table = New Parameter
             table.Name = "table"
             table.DefaultValue = ddlTable.SelectedValue
-            SQLServer.SelectParameters.Add(table)
+            gvDictionary.DataSource.SelectParameters.Add(table)
             tbl = "[TABLE_NAME] LIKE @table"
             clause += tbl
         End If
@@ -119,7 +131,7 @@ Public Class _Default
             Dim column = New Parameter
             column.Name = "search"
             column.DefaultValue = tbSearch.Text
-            SQLServer.SelectParameters.Add(column)
+            gvDictionary.DataSource.SelectParameters.Add(column)
             col = "[COLUMN_NAME] LIKE " + parm
             If (clause.Length > 0) Then
                 clause += " AND "
@@ -133,11 +145,30 @@ Public Class _Default
             whereClause += "ID = -1"
         End If
 
-        SQLServer.SelectCommand = sel + whereClause + orderBy + ";"
+        gvDictionary.DataSource.SelectCommand = sel + whereClause + orderBy + ";"
         gvDictionary.DataBind()
+    End Sub
+
+    Private Sub rbSQL_CheckedChanged(sender As Object, e As EventArgs) Handles rbSQL.CheckedChanged
+        setDataSource()
+        Page.ClientScript.RegisterStartupScript(GetType(Page), "script", "display('WARNING: Changing the DataSource may lose your unsaved changes.');", True)
+    End Sub
+
+    Private Sub rbAccess_CheckedChanged(sender As Object, e As EventArgs) Handles rbAccess.CheckedChanged
+        setDataSource()
+        Page.ClientScript.RegisterStartupScript(GetType(Page), "script", "display('WARNING: Changing the DataSource may lose your unsaved changes.');", True)
     End Sub
 #End Region
 #Region "Helper Subs/Functions"
+    Private Sub setDataSource()
+        If (rbSQL.Checked) Then
+            Session("gvDictionary.DataSource") = SQLServer
+        ElseIf (rbAccess.Checked) Then
+            Session("gvDictionary.DataSource") = AccessDataSource1
+        End If
+        gvDictionary.DataSource = Session("gvDictionary.DataSource")
+    End Sub
+
     Private Sub filterDataDictionaryByTable()
         Dim parm = New ControlParameter
         parm.Name = "Table"
@@ -145,15 +176,15 @@ Public Class _Default
         parm.PropertyName = "SelectedValue"
         parm.DefaultValue = ddlTable.SelectedValue
 
-        If (SQLServer.SelectParameters.Count > 0) Then
-            Dim oldParm = SQLServer.SelectParameters.Item(0)
-            SQLServer.SelectParameters.Remove(oldParm)
+        If (gvDictionary.DataSource.SelectParameters.Count > 0) Then
+            Dim oldParm = gvDictionary.DataSource.SelectParameters.Item(0)
+            gvDictionary.DataSource.SelectParameters.Remove(oldParm)
         End If
 
-        SQLServer.SelectParameters.Add(parm)
+        gvDictionary.DataSource.SelectParameters.Add(parm)
 
         If (ddlTable.SelectedIndex <> 0) Then
-            SQLServer.SelectCommand = ConfigurationManager.AppSettings("selectCommand")
+            gvDictionary.DataSource.SelectCommand = ConfigurationManager.AppSettings("selectCommand")
             gvDictionary.DataBind()
             tbTableName.Text = ddlTable.SelectedValue
         End If
@@ -169,9 +200,19 @@ Public Class _Default
 
         ' DELETE COMMAND
         If (comm.Equals("deleteCommand")) Then
-            SQLServer.DeleteParameters.Add("ID", id)
-            SQLServer.DeleteCommand = ConfigurationManager.AppSettings(comm)
-            SQLServer.Delete()
+            gvDictionary.DataSource.DeleteParameters.Add("ID", id)
+            gvDictionary.DataSource.DeleteCommand = ConfigurationManager.AppSettings(comm)
+            gvDictionary.DataSource.Delete()
+        ElseIf (comm.Equals("applyCommand")) Then
+            Dim description As New Parameter("DESCRIPTION", System.Data.DbType.String, tbDescription.Text)
+            gvDictionary.DataSource.UpdateParameters.Add(description)
+            For Each row As GridViewRow In gvDictionary.Rows
+                Dim rowID As New Parameter("ID", System.Data.DbType.String, row.Cells(1).Text)
+                gvDictionary.DataSource.UpdateParameters.Add(rowID)
+                gvDictionary.DataSource.UpdateCommand = ConfigurationManager.AppSettings(comm)
+                gvDictionary.DataSource.Update()
+                gvDictionary.DataSource.UpdateParameters.Remove(rowID)
+            Next
         Else
             params.Add("TABLE_NAME", tbTableName.Text)
             params.Add("COLUMN_NAME", tbColumnName.Text)
@@ -184,42 +225,45 @@ Public Class _Default
                 params.Add("PRECISION", 0)
                 params.Add("SCALE", 0)
             End If
-            params.Add("NULLABILITY", chkNullable.Checked)
+            If (chkNullable.Checked) Then
+                params.Add("NULLABILITY", 1)
+            Else
+                params.Add("NULLABILITY", 0)
+            End If
             params.Add("KEY", tbKey.Text)
             params.Add("DESCRIPTION", tbDescription.Text)
 
             ' UPDATE COMMAND
             If gvDictionary.SelectedIndex <> -1 Then
                 For i = 0 To params.Count - 1
-                    SQLServer.UpdateParameters.Add(params.Item(i))
+                    gvDictionary.DataSource.UpdateParameters.Add(params.Item(i))
                 Next
-                SQLServer.UpdateParameters.Add("ID", id)
-                SQLServer.UpdateCommand = ConfigurationManager.AppSettings(comm)
-                SQLServer.Update()
+                gvDictionary.DataSource.UpdateParameters.Add("ID", id)
+                gvDictionary.DataSource.UpdateCommand = ConfigurationManager.AppSettings(comm)
+                gvDictionary.DataSource.Update()
             Else
                 For i = 0 To params.Count - 1
-                    SQLServer.InsertParameters.Add(params.Item(i))
+                    gvDictionary.DataSource.InsertParameters.Add(params.Item(i))
                 Next
-                SQLServer.InsertCommand = ConfigurationManager.AppSettings(comm)
-                SQLServer.Insert()
+                gvDictionary.DataSource.InsertCommand = ConfigurationManager.AppSettings(comm)
+                gvDictionary.DataSource.Insert()
             End If
+        End If
 
-            End If
-
-            populateTableDropDown(tbTableName.Text)
-            filterDataDictionaryByTable()
+        populateTableDropDown(tbTableName.Text)
+        filterDataDictionaryByTable()
 
         If (gvDictionary.SelectedIndex = -1) Then
-            Dim oldCmd As String = SQLServer.SelectCommand
-            SQLServer.SelectCommand = "SELECT [ID] FROM [DATA_DICTIONARY]  ORDER BY [KEY] DESC, [COLUMN_NAME] ASC, [COLUMN_TYPE]"
-            Dim reader As DataView = SQLServer.Select(DataSourceSelectArguments.Empty)
+            Dim oldCmd As String = gvDictionary.DataSource.SelectCommand
+            gvDictionary.DataSource.SelectCommand = "SELECT [ID] FROM [DATA_DICTIONARY]  ORDER BY [KEY] DESC, [COLUMN_NAME] ASC, [COLUMN_TYPE]"
+            Dim reader As DataView = gvDictionary.DataSource.Select(DataSourceSelectArguments.Empty)
             If reader.Count > 0 Then
                 id = reader(0).ToString()
             End If
-            SQLServer.SelectCommand = oldCmd
+            gvDictionary.DataSource.SelectCommand = oldCmd
         End If
 
-            selectlv(gvDictionary, id)
+        selectlv(gvDictionary, id)
     End Sub
 
     Private Sub selectlv(ByRef gv As GridView, ByVal str As String)
@@ -263,37 +307,15 @@ Public Class _Default
 
     Private Sub fillSelectedDetails()
         clearForm()
-        Dim lbl As String
-        Dim chk As CheckBox
-
-        lbl = gvDictionary.SelectedRow.Cells(2).Text
-        tbTableName.Text = lbl
-
-        lbl = gvDictionary.SelectedRow.Cells(3).Text
-        tbColumnName.Text = lbl
-
-        lbl = gvDictionary.SelectedRow.Cells(4).Text
-        ddlColumnType.SelectedIndex = populateDataDropDown(lbl)
-
-        lbl = gvDictionary.SelectedRow.Cells(5).Text
-        tbColumnSize.Text = lbl
-
-        lbl = gvDictionary.SelectedRow.Cells(6).Text
-        tbPrecision.Text = lbl
-
-        lbl = gvDictionary.SelectedRow.Cells(7).Text
-        tbScale.Text = lbl
-
-        lbl = gvDictionary.SelectedRow.Cells(8).Text
-        chkNullable.Checked = lbl
-
-        lbl = gvDictionary.SelectedRow.Cells(9).Text
-        tbKey.Text = lbl
-
-        lbl = gvDictionary.SelectedRow.Cells(10).Text
-        If Not (lbl.Equals("&nbsp;")) Then
-            tbDescription.Text = lbl
-        End If
+        tbTableName.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(2).Text)
+        tbColumnName.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(3).Text)
+        ddlColumnType.SelectedIndex = populateDataDropDown(HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(4).Text))
+        tbColumnSize.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(5).Text)
+        tbPrecision.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(6).Text)
+        tbScale.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(7).Text)
+        chkNullable.Checked = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(8).Text)
+        tbKey.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(9).Text)
+        tbDescription.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(10).Text)
     End Sub
 
     Private Function populateDataDropDown(ByVal str As String) As Integer
@@ -314,12 +336,12 @@ Public Class _Default
     Private Sub populateTableDropDown(ByVal str As String)
         Dim arrTable As New ArrayList
         Dim sel As String = ""
-        Dim oldCmd As String = SQLServer.SelectCommand
+        Dim oldCmd As String = gvDictionary.DataSource.SelectCommand
 
         arrTable.Add("")
-        SQLServer.SelectCommand = "SELECT DISTINCT [TABLE_NAME] FROM [DATA_DICTIONARY] ORDER BY [TABLE_NAME]"
+        gvDictionary.DataSource.SelectCommand = "SELECT DISTINCT [TABLE_NAME] FROM [DATA_DICTIONARY] ORDER BY [TABLE_NAME]"
 
-        Dim read As DataView = SQLServer.Select(DataSourceSelectArguments.Empty)
+        Dim read As DataView = gvDictionary.DataSource.Select(DataSourceSelectArguments.Empty)
         For i = 0 To read.Count - 1
             If (read(i).Item(0).ToString.Equals(str)) Then
                 sel = str
@@ -334,7 +356,7 @@ Public Class _Default
         Else
             ddlTable.SelectedValue = sel
         End If
-        SQLServer.SelectCommand = oldCmd
+        gvDictionary.DataSource.SelectCommand = oldCmd
     End Sub
 
     Private Sub clearForm()

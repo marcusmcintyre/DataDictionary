@@ -13,6 +13,7 @@
     <form id="form1" runat="server">
 
         <asp:SqlDataSource ID="SQLServer" runat="server" ConnectionString="<%$ ConnectionStrings:SQLConnection %>"></asp:SqlDataSource>
+        <asp:AccessDataSource ID="AccessDataSource1" runat="server" DataFile="~/Database1.accdb" SelectCommand="SELECT * FROM [DATA_DICTIONARY] WHERE [ID] = 0"></asp:AccessDataSource>
 
         <header>
             <a href="Default.aspx">
@@ -38,6 +39,8 @@
                             <asp:CheckBox ID="chkExactMatch" runat="server" />
                             <asp:Button ID="btnClear" runat="server" Text="Clear" CausesValidation="false" />
                             <asp:Button ID="btnSearch" runat="server" Text="Search" CausesValidation="false" />
+                            <asp:Label ID="lblSQL" runat="server" Text="SQL Server"></asp:Label><asp:RadioButton ID="rbSQL" runat="server" AutoPostBack="true" GroupName="radio"/>
+                            <asp:Label ID="lblAccess" runat="server" Text="Access"></asp:Label><asp:RadioButton ID="rbAccess" runat="server" AutoPostBack="true" GroupName="radio" Checked="true"/>
                         </td>
                     </tr>
                 </table>
@@ -46,7 +49,7 @@
 
         <div class="wrapper" runat="server">
             <article>
-                <asp:GridView ID="gvDictionary" runat="server" AutoGenerateColumns="False" DataKeyNames="ID" DataSourceID="SQLServer">
+                <asp:GridView ID="gvDictionary" runat="server" AutoGenerateColumns="False" DataKeyNames="ID">
                     <Columns>
                         <asp:CommandField ButtonType="Button" SelectText="    " ShowSelectButton="True" />
                         <asp:BoundField DataField="ID" HeaderText="ID" />
@@ -164,13 +167,12 @@
                     <td>
                         <asp:Button ID="btnSave" runat="server" Text="Save" />
                     </td>
+                    <td>
+                        <asp:Button ID="btnApplyDescription" runat="server" Text="Apply to All Results"  CausesValidation="false"/>
+                    </td>
                 </tr>
             </table>
-            
-           
-            
         </div>
-
     </form>
 </body>
 </html>
