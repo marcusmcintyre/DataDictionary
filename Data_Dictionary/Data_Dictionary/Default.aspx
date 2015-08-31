@@ -95,14 +95,14 @@
                     </td>
                     <td>
                         <asp:TextBox ID="tbTableName" runat="server" MaxLength="255"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvTableName" runat="server" ControlToValidate="tbTableName" ErrorMessage="You must enter a Table Name.">*</asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rfvTableName" CssClass="validator" runat="server" ControlToValidate="tbTableName" ErrorMessage="You must enter a Table Name.">*</asp:RequiredFieldValidator>
                     </td>
                     <td>
                         <asp:Label ID="lblColumnType" runat="server" Text="Column Type: "></asp:Label>
                     </td>
                     <td>
                         <asp:DropDownList ID="ddlColumnType" runat="server" AutoPostBack="True"></asp:DropDownList>
-                        <asp:RequiredFieldValidator ID="rfvColumnType" runat="server" ControlToValidate="ddlColumnType"></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rfvColumnType" CssClass="validator" runat="server" ControlToValidate="ddlColumnType"></asp:RequiredFieldValidator>
                     </td>
                     <td>
                         <asp:Label ID="lblDescription" runat="server" Text="Description: "></asp:Label>
@@ -114,7 +114,7 @@
                     </td>
                     <td>
                         <asp:TextBox ID="tbColumnName" runat="server" MaxLength="255"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvColumnName" runat="server" ControlToValidate="tbColumnName" ErrorMessage="You must enter a Column Name.">*</asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rfvColumnName" CssClass="validator" runat="server" ControlToValidate="tbColumnName" ErrorMessage="You must enter a Column Name.">*</asp:RequiredFieldValidator>
                     </td>
                     <td>
                         <asp:Label ID="lblNullable" runat="server" Text="Nullable: "></asp:Label>
@@ -124,7 +124,7 @@
                     </td>
                     <td rowspan="3">
                         <asp:TextBox ID="tbDescription" runat="server" Rows="4" TextMode="MultiLine" MaxLength="64000"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvDescription" runat="server" ControlToValidate="tbDescription" ErrorMessage="You must enter a Description.">*</asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rfvDescription" CssClass="validator" runat="server" ControlToValidate="tbDescription" ErrorMessage="You must enter a Description.">*</asp:RequiredFieldValidator>
                     </td>
                 </tr>
                 <tr>
@@ -133,14 +133,15 @@
                     </td>
                     <td>
                         <asp:TextBox ID="tbColumnSize" runat="server" TextMode="Number" MaxLength="9"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvColumnSize" runat="server" ControlToValidate="tbColumnSize" ErrorMessage="You must enter a Column Size.">*</asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rfvColumnSize" CssClass="validator" runat="server" ControlToValidate="tbColumnSize" ErrorMessage="You must enter a Column Size.">*</asp:RequiredFieldValidator>
                     </td>
                     <td>
                         <asp:Label ID="lblPrecision" runat="server" Text="Precision: "></asp:Label>
                     </td>
                     <td>
                         <asp:TextBox ID="tbPrecision" runat="server" TextMode="Number" MaxLength="9"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvPrecision" runat="server" ControlToValidate="tbPrecision" ErrorMessage="You must enter a Precision value.">*</asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rfvPrecision" CssClass="validator" runat="server" ControlToValidate="tbPrecision" ErrorMessage="You must enter a Precision value.">*</asp:RequiredFieldValidator>
+                        <asp:RangeValidator ID="RangeValidator2" CssClass="validator" runat="server" ControlToValidate="tbPrecision" MinimumValue="0" MaximumValue="65535" ErrorMessage="Precision must be within this range (0 - 65535)">*</asp:RangeValidator>
                     </td>
                 </tr>
                 <tr>
@@ -149,14 +150,15 @@
                     </td>
                     <td>
                         <asp:TextBox ID="tbKey" runat="server" TextMode="Number" MaxLength="1"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvKey" runat="server" ControlToValidate="tbKey" ErrorMessage="You must enter a Key.">*</asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rfvKey" CssClass="validator" runat="server" ControlToValidate="tbKey" ErrorMessage="You must enter a Key.">*</asp:RequiredFieldValidator>
                     </td>
                     <td>
                         <asp:Label ID="lblScale" runat="server" Text="Scale: "></asp:Label>
                     </td>
                     <td>
                         <asp:TextBox ID="tbScale" runat="server" TextMode="Number" MaxLength="9"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvScale" runat="server" ControlToValidate="tbScale" ErrorMessage="You must enter a Scale.">*</asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rfvScale" CssClass="validator" runat="server" ControlToValidate="tbScale" ErrorMessage="You must enter a Scale.">*</asp:RequiredFieldValidator>
+                        <asp:RangeValidator ID="RangeValidator1" CssClass="validator" runat="server" ControlToValidate="tbScale" MinimumValue="0" MaximumValue="65535" ErrorMessage="Scale must be within this range (0 - 65535)">*</asp:RangeValidator>
                     </td>
                 </tr>
                 <tr>

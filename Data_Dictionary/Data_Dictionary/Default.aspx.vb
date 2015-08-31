@@ -10,6 +10,7 @@ Public Class _Default
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not (IsPostBack()) Then
             setDataSource()
+            Session("lastIndex") = gvDictionary.SelectedIndex
             ViewState("ps") = 0
             EnableDisableForm("False")
             populateTableDropDown("")
@@ -26,7 +27,6 @@ Public Class _Default
         End If
         clearForm()
         updateStatus(1)
-        'filterDataDictionaryByTable()
     End Sub
 
 
@@ -38,6 +38,7 @@ Public Class _Default
     Protected Sub lvDictionary_SelectedIndexChanged(sender As Object, e As EventArgs) Handles gvDictionary.SelectedIndexChanged
         If (gvDictionary.SelectedIndex <> -1) Then
             updateStatus(0)
+            Session("lastIndex") = gvDictionary.SelectedIndex
             Dim ct As String = gvDictionary.SelectedRow.Cells(4).Text
             ddlColumnType.SelectedIndex = populateDataDropDown(ct)
             EnableDisableForm("True")
@@ -55,6 +56,7 @@ Public Class _Default
         End If
         modifyEntry(comm)
         updateStatus(0)
+        executeSearch()
         Page.ClientScript.RegisterStartupScript(GetType(Page), "script", "display('You successfully saved this entry.');", True)
     End Sub
 
@@ -63,16 +65,15 @@ Public Class _Default
         clearForm()
         tbTableName.Text = ddlTable.SelectedValue
         ddlColumnType.SelectedIndex = -1
+        Session("lastIndex") = gvDictionary.SelectedIndex
         gvDictionary.SelectedIndex = -1
         EnableDisableForm("True")
     End Sub
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
-        If (gvDictionary.SelectedIndex = -1) Then
-            EnableDisableForm("False")
-        End If
-        clearForm()
-        filterDataDictionaryByTable()
+        gvDictionary.SelectedIndex = Session("lastIndex")
+        executeSearch()
+        fillSelectedDetails()
     End Sub
 
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
@@ -80,12 +81,13 @@ Public Class _Default
         gvDictionary.SelectedIndex = -1
         EnableDisableForm("False")
         clearForm()
-        filterDataDictionaryByTable()
+        executeSearch()
     End Sub
 
     Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
         ddlTable.SelectedIndex = -1
         tbSearch.Text = ""
+        clearForm()
     End Sub
 
     Private Sub btnApplyDescription_Click(sender As Object, e As EventArgs) Handles btnApplyDescription.Click
@@ -99,6 +101,30 @@ Public Class _Default
     End Sub
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
+        executeSearch()
+    End Sub
+
+    Private Sub rbSQL_CheckedChanged(sender As Object, e As EventArgs) Handles rbSQL.CheckedChanged
+        setDataSource()
+        Page.ClientScript.RegisterStartupScript(GetType(Page), "script", "warning();", True)
+    End Sub
+
+    Private Sub rbAccess_CheckedChanged(sender As Object, e As EventArgs) Handles rbAccess.CheckedChanged
+        setDataSource()
+        Page.ClientScript.RegisterStartupScript(GetType(Page), "script", "warning();", True)
+    End Sub
+#End Region
+#Region "Helper Subs/Functions"
+    Private Sub setDataSource()
+        If (rbSQL.Checked) Then
+            Session("gvDictionary.DataSource") = SQLServer
+        ElseIf (rbAccess.Checked) Then
+            Session("gvDictionary.DataSource") = AccessDataSource1
+        End If
+        gvDictionary.DataSource = Session("gvDictionary.DataSource")
+    End Sub
+
+    Private Sub executeSearch()
         Dim sel As String = "SELECT * FROM [DATA_DICTIONARY]"
         Dim clause As String = ""
         Dim whereClause As String = " WHERE "
@@ -147,26 +173,6 @@ Public Class _Default
 
         gvDictionary.DataSource.SelectCommand = sel + whereClause + orderBy + ";"
         gvDictionary.DataBind()
-    End Sub
-
-    Private Sub rbSQL_CheckedChanged(sender As Object, e As EventArgs) Handles rbSQL.CheckedChanged
-        setDataSource()
-        Page.ClientScript.RegisterStartupScript(GetType(Page), "script", "display('WARNING: Changing the DataSource may lose your unsaved changes.');", True)
-    End Sub
-
-    Private Sub rbAccess_CheckedChanged(sender As Object, e As EventArgs) Handles rbAccess.CheckedChanged
-        setDataSource()
-        Page.ClientScript.RegisterStartupScript(GetType(Page), "script", "display('WARNING: Changing the DataSource may lose your unsaved changes.');", True)
-    End Sub
-#End Region
-#Region "Helper Subs/Functions"
-    Private Sub setDataSource()
-        If (rbSQL.Checked) Then
-            Session("gvDictionary.DataSource") = SQLServer
-        ElseIf (rbAccess.Checked) Then
-            Session("gvDictionary.DataSource") = AccessDataSource1
-        End If
-        gvDictionary.DataSource = Session("gvDictionary.DataSource")
     End Sub
 
     Private Sub filterDataDictionaryByTable()
@@ -250,8 +256,7 @@ Public Class _Default
             End If
         End If
 
-        populateTableDropDown(tbTableName.Text)
-        filterDataDictionaryByTable()
+        executeSearch()
 
         If (gvDictionary.SelectedIndex = -1) Then
             Dim oldCmd As String = gvDictionary.DataSource.SelectCommand
@@ -267,29 +272,22 @@ Public Class _Default
     End Sub
 
     Private Sub selectlv(ByRef gv As GridView, ByVal str As String)
-        Dim x, i As Integer
+        Dim x As Integer
         Dim lblID As String
-        Dim intRowFound, intPageFound As Integer
-        'EACH PAGE
-        For i = 0 To gv.PageCount
-            gv.PageIndex = i
-            gv.DataBind()
-            If gv.Rows.Count > 0 Then
-                'EACH ROW
-                For x = 0 To gv.Rows.Count - 1
-                    lblID = gv.Rows(x).Cells(1).Text
-                    'FOUND IT
-                    If lblID.Equals(str) Then
-                        intRowFound = x
-                        intPageFound = gv.PageIndex
-                    End If
-                Next
-            End If
-        Next
+        Dim intRowFound As Integer = -1
+        If gv.Rows.Count > 0 Then
+            'EACH ROW
+            For x = 0 To gv.Rows.Count - 1
+                lblID = gv.Rows(x).Cells(1).Text
+                'FOUND IT
+                If lblID.Equals(str) Then
+                    intRowFound = x
+                End If
+            Next
+        End If
 
         gv.SelectedIndex = intRowFound
         gv.DataBind()
-
     End Sub
 
     Private Sub updateStatus(ByVal mode As Integer)
@@ -297,25 +295,29 @@ Public Class _Default
             lblStatus.Text = "Adding New Entry"
             lblCurrID.Text = ""
         Else
-            Dim id As String = gvDictionary.SelectedRow.Cells(1).Text
-            Dim table As String = gvDictionary.SelectedRow.Cells(2).Text
-            Dim column As String = gvDictionary.SelectedRow.Cells(3).Text
-            lblStatus.Text = "Working on: " & table & ", " & column
-            lblCurrID.Text = "ID: " & id
+            If (gvDictionary.SelectedIndex <> -1) Then
+                Dim id As String = gvDictionary.SelectedRow.Cells(1).Text
+                Dim table As String = gvDictionary.SelectedRow.Cells(2).Text
+                Dim column As String = gvDictionary.SelectedRow.Cells(3).Text
+                lblStatus.Text = "Working on: " & table & ", " & column
+                lblCurrID.Text = "ID: " & id
+            End If
         End If
     End Sub
 
     Private Sub fillSelectedDetails()
         clearForm()
-        tbTableName.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(2).Text)
-        tbColumnName.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(3).Text)
-        ddlColumnType.SelectedIndex = populateDataDropDown(HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(4).Text))
-        tbColumnSize.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(5).Text)
-        tbPrecision.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(6).Text)
-        tbScale.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(7).Text)
-        chkNullable.Checked = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(8).Text)
-        tbKey.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(9).Text)
-        tbDescription.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(10).Text)
+        If (gvDictionary.SelectedIndex <> -1) Then
+            tbTableName.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(2).Text)
+            tbColumnName.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(3).Text)
+            ddlColumnType.SelectedIndex = populateDataDropDown(HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(4).Text))
+            tbColumnSize.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(5).Text)
+            tbPrecision.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(6).Text)
+            tbScale.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(7).Text)
+            chkNullable.Checked = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(8).Text)
+            tbKey.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(9).Text)
+            tbDescription.Text = HttpUtility.HtmlDecode(gvDictionary.SelectedRow.Cells(10).Text)
+        End If
     End Sub
 
     Private Function populateDataDropDown(ByVal str As String) As Integer

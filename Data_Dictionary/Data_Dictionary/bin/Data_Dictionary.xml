@@ -343,6 +343,14 @@ rfvPrecision control.
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
+</member><member name="F:Data_Dictionary._Default.RangeValidator2">
+	<summary>
+RangeValidator2 control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
 </member><member name="F:Data_Dictionary._Default.lblKey">
 	<summary>
 lblKey control.
@@ -386,6 +394,14 @@ To modify move field declaration from designer file to code-behind file.
 </member><member name="F:Data_Dictionary._Default.rfvScale">
 	<summary>
 rfvScale control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member><member name="F:Data_Dictionary._Default.RangeValidator1">
+	<summary>
+RangeValidator1 control.
 </summary>
 	<remarks>
 Auto-generated field.

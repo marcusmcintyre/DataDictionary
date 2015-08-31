@@ -365,6 +365,15 @@ Partial Public Class _Default
     Protected WithEvents rfvPrecision As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
     '''<summary>
+    '''RangeValidator2 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents RangeValidator2 As Global.System.Web.UI.WebControls.RangeValidator
+
+    '''<summary>
     '''lblKey control.
     '''</summary>
     '''<remarks>
@@ -417,6 +426,15 @@ Partial Public Class _Default
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents rfvScale As Global.System.Web.UI.WebControls.RequiredFieldValidator
+
+    '''<summary>
+    '''RangeValidator1 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents RangeValidator1 As Global.System.Web.UI.WebControls.RangeValidator
 
     '''<summary>
     '''btnCancel control.

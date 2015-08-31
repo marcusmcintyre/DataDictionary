@@ -35,6 +35,10 @@ header {
     background-color: lightcyan;
 }
 
+.validator {
+    color:red;
+}
+
 a {
     text-decoration: none;
     color: black;

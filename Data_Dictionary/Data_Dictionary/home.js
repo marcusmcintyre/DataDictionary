@@ -7,3 +7,7 @@
 function display(message) {
     alert(message);
 }
+
+function warning() {
+    alert('WARNING: Changing the Data Source may lose your unsaved changes.');
+}
