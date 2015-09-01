@@ -77,11 +77,13 @@ Public Class _Default
     End Sub
 
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
+        Dim table As String = ddlTable.SelectedValue
         modifyEntry("deleteCommand")
         gvDictionary.SelectedIndex = -1
         EnableDisableForm("False")
         clearForm()
         executeSearch()
+        populateTableDropDown(table)
     End Sub
 
     Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
@@ -427,11 +429,13 @@ Public Class _Default
         'Buttons
         btnSave.Enabled = value
         btnCancel.Enabled = value
+        btnApplyDescription.Enabled = value
         If (gvDictionary.SelectedIndex <> -1) Then
             btnDelete.Enabled = True
         Else
             btnDelete.Enabled = False
         End If
+
 
         lblStatus.Visible = value
         lblCurrID.Visible = value

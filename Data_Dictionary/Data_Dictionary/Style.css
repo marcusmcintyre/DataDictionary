@@ -14,7 +14,6 @@ header {
     position:absolute;
     top:0px;
     height: 15vh;
-    overflow:hidden;
 }
 
 .wrapper {
@@ -28,7 +27,6 @@ header {
     position:absolute;
     bottom:0px;
     height:20vh;
-    overflow:hidden;
 }
 
 .Row-Selected {
